@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>H czy CH – Mitologia Grecka</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;900&family=Crimson+Pro:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #c9a84c;
+    --gold-light: #e8c96d;
+    --gold-dim: #7a5f1e;
+    --marble: #f5f0e8;
+    --marble-dark: #e0d8c8;
+    --ink: #1a1208;
+    --shadow: rgba(0,0,0,0.45);
+    --correct: #3d7a3d;
+    --wrong: #8b2020;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background-color: #0d0a05;
+    background-image:
+      radial-gradient(ellipse at 50% 0%, #2a1f05 0%, transparent 60%),
+      repeating-linear-gradient(0deg, transparent, transparent 40px, rgba(201,168,76,0.03) 40px, rgba(201,168,76,0.03) 41px),
+      repeating-linear-gradient(90deg, transparent, transparent 40px, rgba(201,168,76,0.03) 40px, rgba(201,168,76,0.03) 41px);
+    min-height: 100vh;
+    font-family: 'Crimson Pro', serif;
+    color: var(--ink);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 1rem 4rem;
+  }
+
+  /* ---- Stars background ---- */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 10% 15%, rgba(255,230,120,0.6) 0%, transparent 100%),
+      radial-gradient(1px 1px at 25% 40%, rgba(255,230,120,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 55% 8%, rgba(255,230,120,0.7) 0%, transparent 100%),
+      radial-gradient(1px 1px at 80% 25%, rgba(255,230,120,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 90% 60%, rgba(255,230,120,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 40% 70%, rgba(255,230,120,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 70% 80%, rgba(255,230,120,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 15% 85%, rgba(255,230,120,0.4) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 760px;
+  }
+
+  /* ---- Header ---- */
+  header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    animation: fadeDown 1s ease both;
+  }
+
+  .greek-line {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .greek-line::before,
+  .greek-line::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+  }
+
+  .greek-ornament { color: var(--gold); font-size: 1.2rem; letter-spacing: 0.3em; }
+
+  h1 {
+    font-family: 'Cinzel', serif;
+    font-weight: 900;
+    font-size: clamp(2rem, 6vw, 3.4rem);
+    color: var(--gold-light);
+    text-shadow: 0 0 40px rgba(201,168,76,0.4), 0 2px 4px rgba(0,0,0,0.8);
+    letter-spacing: 0.06em;
+    line-height: 1.1;
+  }
+
+  .subtitle {
+    font-family: 'Crimson Pro', serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    color: rgba(201,168,76,0.65);
+    margin-top: 0.5rem;
+    letter-spacing: 0.12em;
+  }
+
+  /* ---- Progress bar ---- */
+  .progress-wrap {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid var(--gold-dim);
+    border-radius: 20px;
+    height: 6px;
+    margin-bottom: 2rem;
+    overflow: hidden;
+  }
+
+  .progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold-dim), var(--gold-light));
+    border-radius: 20px;
+    transition: width 0.5s cubic-bezier(.4,0,.2,1);
+    box-shadow: 0 0 10px var(--gold);
+  }
+
+  .progress-label {
+    font-family: 'Cinzel', serif;
+    font-size: 0.75rem;
+    color: var(--gold-dim);
+    text-align: right;
+    margin-bottom: 0.4rem;
+    letter-spacing: 0.1em;
+  }
+
+  /* ---- Card ---- */
+  .card {
+    background: linear-gradient(145deg, #f7f3eb, #ede5d2);
+    border: 1px solid var(--gold);
+    border-radius: 4px;
+    box-shadow:
+      0 0 0 4px rgba(201,168,76,0.12),
+      0 20px 60px rgba(0,0,0,0.6),
+      inset 0 1px 0 rgba(255,255,255,0.6);
+    padding: 2.5rem 2.5rem 2rem;
+    position: relative;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .card::before, .card::after {
+    content: '☽';
+    position: absolute;
+    font-size: 1.2rem;
+    color: var(--gold);
+    opacity: 0.5;
+  }
+  .card::before { top: 0.8rem; left: 1rem; }
+  .card::after { bottom: 0.8rem; right: 1rem; transform: scaleX(-1); }
+
+  .question-num {
+    font-family: 'Cinzel', serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    color: var(--gold-dim);
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  .hint {
+    font-style: italic;
+    font-size: 0.95rem;
+    color: #6b5a3a;
+    margin-bottom: 1.6rem;
+    line-height: 1.5;
+    border-left: 2px solid var(--gold);
+    padding-left: 0.8rem;
+  }
+
+  /* ---- Word display ---- */
+  .word-display {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .blank {
+    display: inline-flex;
+    gap: 0.25rem;
+    margin: 0 0.1rem;
+  }
+
+  .btn-choice {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(1.4rem, 4vw, 1.9rem);
+    font-weight: 600;
+    padding: 0.3rem 0.6rem;
+    border: 2px solid var(--gold-dim);
+    border-radius: 3px;
+    background: white;
+    color: #5a3e10;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.05em;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  }
+
+  .btn-choice:hover:not(:disabled) {
+    background: var(--gold-light);
+    border-color: var(--gold);
+    color: #2a1a00;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 14px rgba(201,168,76,0.4);
+  }
+
+  .btn-choice.selected-correct {
+    background: #d4edda;
+    border-color: var(--correct);
+    color: var(--correct);
+    pointer-events: none;
+  }
+
+  .btn-choice.selected-wrong {
+    background: #f8d7da;
+    border-color: var(--wrong);
+    color: var(--wrong);
+    pointer-events: none;
+  }
+
+  .btn-choice.reveal-correct {
+    background: #d4edda;
+    border-color: var(--correct);
+    color: var(--correct);
+    pointer-events: none;
+  }
+
+  .word-rest {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(1.4rem, 4vw, 1.9rem);
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: 0.05em;
+  }
+
+  /* ---- Feedback ---- */
+  .feedback {
+    min-height: 2rem;
+    text-align: center;
+    font-size: 1rem;
+    font-style: italic;
+    color: #5a3e10;
+    margin-bottom: 1rem;
+    transition: opacity 0.3s;
+  }
+
+  .feedback.correct { color: var(--correct); font-weight: 600; font-style: normal; }
+  .feedback.wrong { color: var(--wrong); }
+
+  /* ---- Next button ---- */
+  .btn-next {
+    display: block;
+    margin: 0 auto;
+    font-family: 'Cinzel', serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.7rem 2.5rem;
+    background: linear-gradient(135deg, #a07820, var(--gold));
+    border: none;
+    border-radius: 2px;
+    color: #fff8e8;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.2);
+    transition: all 0.25s;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .btn-next.visible {
+    opacity: 1;
+    pointer-events: all;
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+
+  .btn-next:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.4); }
+
+  /* ---- Results ---- */
+  .results {
+    text-align: center;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .results-card {
+    background: linear-gradient(145deg, #f7f3eb, #ede5d2);
+    border: 1px solid var(--gold);
+    border-radius: 4px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+    padding: 3rem 2rem;
+  }
+
+  .score-circle {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 3px solid var(--gold);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    background: radial-gradient(circle, #fff8e8, #f0e5cc);
+    box-shadow: 0 0 30px rgba(201,168,76,0.3), inset 0 2px 4px rgba(255,255,255,0.8);
+  }
+
+  .score-number {
+    font-family: 'Cinzel', serif;
+    font-size: 2.4rem;
+    font-weight: 900;
+    color: var(--gold-dim);
+    line-height: 1;
+  }
+
+  .score-total {
+    font-family: 'Cinzel', serif;
+    font-size: 0.85rem;
+    color: #8a7040;
+  }
+
+  .results h2 {
+    font-family: 'Cinzel', serif;
+    font-size: 1.8rem;
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+  }
+
+  .results-msg {
+    font-style: italic;
+    color: #5a3e10;
+    margin-bottom: 2rem;
+    font-size: 1.05rem;
+  }
+
+  .review-list {
+    text-align: left;
+    list-style: none;
+    margin-bottom: 2rem;
+    display: grid;
+    gap: 0.6rem;
+  }
+
+  .review-item {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    font-size: 0.95rem;
+    padding: 0.5rem 0.8rem;
+    border-radius: 3px;
+    background: rgba(255,255,255,0.5);
+    border-left: 3px solid transparent;
+  }
+
+  .review-item.ok { border-color: var(--correct); }
+  .review-item.err { border-color: var(--wrong); }
+
+  .review-icon { font-size: 1rem; }
+  .review-word { font-family: 'Cinzel', serif; font-weight: 600; font-size: 1rem; }
+  .review-word .correct-part { color: var(--correct); }
+  .review-word .wrong-part { color: var(--wrong); text-decoration: line-through; margin-right: 0.2rem; }
+  .review-desc { color: #6b5a3a; font-style: italic; font-size: 0.88rem; }
+
+  .btn-restart {
+    font-family: 'Cinzel', serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.8rem 2.5rem;
+    background: linear-gradient(135deg, #a07820, var(--gold));
+    border: none;
+    border-radius: 2px;
+    color: #fff8e8;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+    transition: all 0.25s;
+  }
+
+  .btn-restart:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.4); }
+
+  /* ---- Animations ---- */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 4px 16px rgba(0,0,0,0.3), 0 0 0 0 rgba(201,168,76,0.4); }
+    50%       { box-shadow: 0 4px 16px rgba(0,0,0,0.3), 0 0 0 6px rgba(201,168,76,0); }
+  }
+  @keyframes shake {
+    0%,100% { transform: translateX(0); }
+    20%     { transform: translateX(-6px); }
+    40%     { transform: translateX(6px); }
+    60%     { transform: translateX(-4px); }
+    80%     { transform: translateX(4px); }
+  }
+  .shake { animation: shake 0.4s ease; }
+
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <div class="greek-line">
+      <span class="greek-ornament">⸻  Ω  ⸻</span>
+    </div>
+    <h1>H czy CH?</h1>
+    <div class="subtitle">Ortografia w świecie mitologii greckiej</div>
+    <div class="greek-line" style="margin-top:0.6rem">
+      <span class="greek-ornament">⸻  Ω  ⸻</span>
+    </div>
+  </header>
+
+  <!-- Quiz section -->
+  <div id="quiz-section">
+    <div class="progress-label" id="progress-label">Pytanie 1 z 14</div>
+    <div class="progress-wrap">
+      <div class="progress-bar" id="progress-bar" style="width:0%"></div>
+    </div>
+
+    <div class="card" id="card">
+      <div class="question-num" id="question-num">Pytanie 1</div>
+      <div class="hint" id="hint"></div>
+      <div class="word-display" id="word-display"></div>
+      <div class="feedback" id="feedback"></div>
+      <button class="btn-next" id="btn-next" onclick="nextQuestion()">Dalej →</button>
+    </div>
+  </div>
+
+  <!-- Results section -->
+  <div id="results-section" class="results hidden">
+    <div class="results-card">
+      <div class="score-circle">
+        <div class="score-number" id="score-number">0</div>
+        <div class="score-total" id="score-total">/ 14</div>
+      </div>
+      <h2 id="results-title">Koniec testu!</h2>
+      <p class="results-msg" id="results-msg"></p>
+      <ul class="review-list" id="review-list"></ul>
+      <button class="btn-restart" onclick="restart()">↺ Zacznij od nowa</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const questions = [
+  {
+    before: '',
+    blank: ['H','Ch'],
+    after: 'ades',
+    answer: 'H',
+    hint: 'Bóg świata podziemnego, brat Zeusa i Posejdona.',
+    desc: 'Hades – władca królestwa umarłych'
+  },
+  {
+    before: '',
+    blank: ['H','Ch'],
+    after: 'aron',
+    answer: 'Ch',
+    hint: 'Staruszek, który za monetę przewoził dusze przez rzekę Styks.',
+    desc: 'Charon – przewoźnik dusz'
+  },
+  {
+    before: '',
+    blank: ['H','Ch'],
+    after: 'imera',
+    answer: 'Ch',
+    hint: 'Zionący ogniem potwór o głowie lwa, tułowiu kozy i ogonie węża.',
+    desc: 'Chimera – ognisty potwór'
+  },
+  {
+    before: '',
+    blank: ['H','Ch'],
+    after: 'ermes',
+    answer: 'H',
+    hint: 'Boski posłaniec, patron podróżnych, złodziei i kupców.',
+    desc: 'Hermes – skrzydłonogi posłaniec bogów'
+  },
+  {
+    before: '',
+    blank: ['H','Ch'],
+    after: 'aos',
+    answer: 'Ch',
+    hint: 'Pierwotna pustka sprzed narodzin świata.',
+    desc: 'Chaos – prapierwotna pustka'
+  },
+  {
+    before: '',
+    blank: ['H','Ch'],
+    after: 'ydra',
+    answer: 'H',
+    hint: 'Wielogłowy wąż zabity przez Heraklesa – gdy ucinał głowę, wyrastały dwie nowe.',
+    desc: 'Hydra – odradzający się wąż'
+  },
+  {
+    before: '',
+    blank: ['H','Ch'],
+    after: 'ronos',
+    answer: 'Ch',
+    hint: 'Tytan personifikujący czas, ojciec Zeusa, który pożerał własne dzieci.',
+    desc: 'Chronos – bóg czasu'
+  },
+  {
+    before: '',
+    blank: ['H','Ch'],
+    after: 'elios',
+    answer: 'H',
+    hint: 'Bóg-słońce, który codziennie przemierzał niebo złotym rydwanem.',
+    desc: 'Helios – bóg słońca'
+  },
+  {
+    before: '',
+    blank: ['H','Ch'],
+    after: 'ejron',
+    answer: 'Ch',
+    hint: 'Mądry centaur, nauczyciel Achillesa i Jazona.',
+    desc: 'Chejron – szlachetny centaur'
+  },
+  {
+    before: '',
+    blank: ['H','Ch'],
+    after: 'arybda',
+    answer: 'Ch',
+    hint: 'Groźny wir morski, który połykał okręty – towarzyszka Scylli.',
+    desc: 'Charybda – pochłaniający wir'
+  },
+  {
+    before: '',
+    blank: ['H','Ch'],
+    after: 'era',
+    answer: 'H',
+    hint: 'Królowa Olimpu, żona Zeusa, opiekunka małżeństwa.',
+    desc: 'Hera – królowa bogów'
+  },
+  {
+    before: '',
+    blank: ['H','Ch'],
+    after: 'efajstos',
+    answer: 'H',
+    hint: 'Kulejący bóg ognia i kowalstwa, twórca zbroi Achillesa.',
+    desc: 'Hefajstos – bóg ognia'
+  },
+  {
+    before: '',
+    blank: ['H','Ch'],
+    after: 'erakles',
+    answer: 'H',
+    hint: 'Najsłynniejszy grecki heros, wykonał dwanaście prac.',
+    desc: 'Herakles – heros o nadludzkiej sile'
+  },
+  {
+    before: 'E',
+    blank: ['h','ch'],
+    after: 'o',
+    answer: 'ch',
+    hint: 'Nimfa, która z miłości do Narcyza zamarła – pozostał po niej tylko głos.',
+    desc: 'Echo – nimfa zaklęta w głos'
+  },
+  {
+    before: '',
+    blank: ['H','Ch'],
+    after: 'ekate',
+    answer: 'H',
+    hint: 'Tajemnicza bogini magii, nocy i rozstajnych dróg, towarzyszka duchów.',
+    desc: 'Hekate – bogini magii i nocy'
+  },
+  {
+    before: '',
+    blank: ['H','Ch'],
+    after: 'estia',
+    answer: 'H',
+    hint: 'Bogini domowego ogniska, opiekunka rodziny i świętego ognia na Olimpie.',
+    desc: 'Hestia – bogini domowego ogniska'
+  },
+  {
+    before: '',
+    blank: ['H','Ch'],
+    after: 'ebe',
+    answer: 'H',
+    hint: 'Bogini wiecznej młodości, córka Zeusa i Hery, podawała nektar bogom.',
+    desc: 'Hebe – bogini młodości'
+  },
+  {
+    before: '',
+    blank: ['H','Ch'],
+    after: 'ypnos',
+    answer: 'H',
+    hint: 'Bóg snu, bliźniak Tanatosa – boga śmierci, mieszkał w podziemiach.',
+    desc: 'Hypnos – bóg snu'
+  },
+  {
+    before: '',
+    blank: ['H','Ch'],
+    after: 'elena',
+    answer: 'H',
+    hint: 'Najpiękniejsza kobieta świata, jej porwanie przez Parysa wywołało wojnę trojańską.',
+    desc: 'Helena – piękność, przyczyna wojny trojańskiej'
+  },
+  {
+    before: '',
+    blank: ['H','Ch'],
+    after: 'yperion',
+    answer: 'H',
+    hint: 'Tytan będący uosobieniem niebiańskiego światła, ojciec Heliosa i Seleny.',
+    desc: 'Hyperion – Tytan niebiańskiego światła'
+  },
+  {
+    before: '',
+    blank: ['H','Ch'],
+    after: 'arpie',
+    answer: 'H',
+    hint: 'Skrzydlate demony o kobiecych twarzach i szponach – unosiły ludzi do Tartaru.',
+    desc: 'Harpie – skrzydłate demony burzy'
+  },
+  {
+    before: '',
+    blank: ['H','Ch'],
+    after: 'esperydy',
+    answer: 'H',
+    hint: 'Nimfy strzegące ogrodu ze złotymi jabłkami na krańcu świata.',
+    desc: 'Hesperydy – strażniczki złotych jabłek'
+  },
+  {
+    before: '',
+    blank: ['H','Ch'],
+    after: 'loris',
+    answer: 'Ch',
+    hint: 'Bogini kwiatów i wiosny, żona Zefira – boga zachodniego wiatru.',
+    desc: 'Chloris – bogini kwiatów'
+  },
+  {
+    before: '',
+    blank: ['H','Ch'],
+    after: 'aryty',
+    answer: 'Ch',
+    hint: 'Trzy boginie wdzięku i piękna: Agłaja, Eufrozyna i Talia.',
+    desc: 'Charyty – boginie wdzięku'
+  },
+  {
+    before: 'A',
+    blank: ['h','ch'],
+    after: 'eron',
+    answer: 'ch',
+    hint: 'Rzeka smutku w podziemnym świecie, jedna z pięciu rzek Hadesu.',
+    desc: 'Acheron – rzeka smutku w Hadesie'
+  },
+  {
+    before: 'Psy',
+    blank: ['h','ch'],
+    after: 'e',
+    answer: 'ch',
+    hint: 'Śmiertelna piękność, ukochana Erosa, która stała się boginią duszy.',
+    desc: 'Psyche – bogini duszy, ukochana Erosa'
+  },
+  {
+    before: 'La',
+    blank: ['h','ch'],
+    after: 'esis',
+    answer: 'ch',
+    hint: 'Jedna z trzech Mojr – Losic – odpowiedzialna za mierzenie nici życia.',
+    desc: 'Lachesis – Mojra mierząca nić życia'
+  },
+  {
+    before: '',
+    blank: ['H','Ch'],
+    after: 'rysaor',
+    answer: 'Ch',
+    hint: 'Złoty olbrzym z mieczem, syn Posejdona i Meduzy, narodzony z jej krwi.',
+    desc: 'Chrysaor – złoty olbrzym, syn Meduzy'
+  },
+  {
+    before: '',
+    blank: ['H','Ch'],
+    after: 'iakint',
+    answer: 'H',
+    hint: 'Piękny młodzieniec, ukochany Apolla, zamieniony po śmierci w kwiat.',
+    desc: 'Hiakint – ukochany Apolla, zamieniony w kwiat'
+  },
+  {
+    before: '',
+    blank: ['H','Ch'],
+    after: 'ione',
+    answer: 'Ch',
+    hint: 'Córka Boreasza – boga północnego wiatru, porwana przez Posejdona.',
+    desc: 'Chione – córka boga wiatru Boreasza'
+  }
+];
+
+let current = 0;
+let score = 0;
+let answered = false;
+let results = [];
+
+function renderQuestion() {
+  const q = questions[current];
+  answered = false;
+
+  document.getElementById('question-num').textContent = `Pytanie ${current + 1}`;
+  document.getElementById('hint').textContent = q.hint;
+  document.getElementById('feedback').textContent = '';
+  document.getElementById('feedback').className = 'feedback';
+  document.getElementById('btn-next').classList.remove('visible');
+
+  const total = questions.length;
+  document.getElementById('progress-label').textContent = `Pytanie ${current + 1} z ${total}`;
+  document.getElementById('progress-bar').style.width = `${(current / total) * 100}%`;
+
+  const display = document.getElementById('word-display');
+  display.innerHTML = '';
+
+  if (q.before) {
+    const span = document.createElement('span');
+    span.className = 'word-rest';
+    span.textContent = q.before;
+    display.appendChild(span);
+  }
+
+  const blank = document.createElement('div');
+  blank.className = 'blank';
+  q.blank.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'btn-choice';
+    btn.textContent = opt;
+    btn.setAttribute('data-val', opt);
+    btn.addEventListener('click', () => choose(opt, btn));
+    blank.appendChild(btn);
+  });
+  display.appendChild(blank);
+
+  const after = document.createElement('span');
+  after.className = 'word-rest';
+  after.textContent = q.after;
+  display.appendChild(after);
+
+  // Restart card animation
+  const card = document.getElementById('card');
+  card.style.animation = 'none';
+  card.offsetHeight; // reflow
+  card.style.animation = '';
+}
+
+function choose(val, btn) {
+  if (answered) return;
+  answered = true;
+
+  const q = questions[current];
+  const allBtns = document.querySelectorAll('.btn-choice');
+  const isCorrect = val.toLowerCase() === q.answer.toLowerCase();
+
+  if (isCorrect) {
+    btn.classList.add('selected-correct');
+    score++;
+    const fb = document.getElementById('feedback');
+    fb.textContent = '✓ Brawo! To poprawna odpowiedź.';
+    fb.className = 'feedback correct';
+    results.push({ q, chose: val, ok: true });
+  } else {
+    btn.classList.add('selected-wrong');
+    // reveal correct
+    allBtns.forEach(b => {
+      if (b.getAttribute('data-val').toLowerCase() === q.answer.toLowerCase()) {
+        b.classList.add('reveal-correct');
+      }
+    });
+    const fb = document.getElementById('feedback');
+    fb.textContent = `✗ Niestety – poprawna odpowiedź to: ${q.answer.toUpperCase()}.`;
+    fb.className = 'feedback wrong';
+    document.getElementById('card').classList.add('shake');
+    setTimeout(() => document.getElementById('card').classList.remove('shake'), 500);
+    results.push({ q, chose: val, ok: false });
+  }
+
+  document.getElementById('btn-next').classList.add('visible');
+}
+
+function nextQuestion() {
+  current++;
+  if (current >= questions.length) {
+    showResults();
+  } else {
+    renderQuestion();
+  }
+}
+
+function showResults() {
+  document.getElementById('quiz-section').classList.add('hidden');
+  const rs = document.getElementById('results-section');
+  rs.classList.remove('hidden');
+
+  document.getElementById('score-number').textContent = score;
+  document.getElementById('score-total').textContent = `/ ${questions.length}`;
+
+  const pct = score / questions.length;
+  let title, msg;
+  if (pct === 1)        { title = 'Doskonale!'; msg = 'Achilles jest z Ciebie dumny. Bezbłędny wynik!'; }
+  else if (pct >= 0.85) { title = 'Świetnie!'; msg = 'Hermes sam by Ci pogratulował. Prawie perfekcja!'; }
+  else if (pct >= 0.65) { title = 'Dobrze!'; msg = 'Zeus kiwa głową z uznaniem. Jeszcze trochę ćwiczeń!'; }
+  else if (pct >= 0.4)  { title = 'Nieźle!'; msg = 'Muzy nie tracą wiary w Ciebie. Warto powtórzyć!'; }
+  else                  { title = 'Próbuj dalej!'; msg = 'Hades patrzy z zainteresowaniem… Czas na naukę!'; }
+
+  document.getElementById('results-title').textContent = title;
+  document.getElementById('results-msg').textContent = msg;
+
+  const list = document.getElementById('review-list');
+  list.innerHTML = '';
+  results.forEach(r => {
+    const li = document.createElement('li');
+    li.className = `review-item ${r.ok ? 'ok' : 'err'}`;
+
+    const icon = document.createElement('span');
+    icon.className = 'review-icon';
+    icon.textContent = r.ok ? '✓' : '✗';
+
+    const word = document.createElement('span');
+    word.className = 'review-word';
+    const part = document.createElement('span');
+    if (r.ok) {
+      part.className = 'correct-part';
+      part.textContent = r.q.answer;
+    } else {
+      part.className = 'wrong-part';
+      part.textContent = r.chose;
+    }
+    word.appendChild(document.createTextNode(r.q.before));
+    word.appendChild(part);
+    if (!r.ok) {
+      const corr = document.createElement('span');
+      corr.className = 'correct-part';
+      corr.textContent = r.q.answer;
+      word.appendChild(corr);
+    }
+    word.appendChild(document.createTextNode(r.q.after));
+
+    const desc = document.createElement('span');
+    desc.className = 'review-desc';
+    desc.textContent = '– ' + r.q.desc;
+
+    li.appendChild(icon);
+    li.appendChild(word);
+    li.appendChild(desc);
+    list.appendChild(li);
+  });
+}
+
+function restart() {
+  current = 0;
+  score = 0;
+  answered = false;
+  results = [];
+  document.getElementById('results-section').classList.add('hidden');
+  document.getElementById('quiz-section').classList.remove('hidden');
+  document.getElementById('progress-bar').style.width = '0%';
+  renderQuestion();
+}
+
+renderQuestion();
+</script>
+</body>
+</html>
