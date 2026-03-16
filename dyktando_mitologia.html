@@ -456,26 +456,26 @@ textarea::placeholder { color: #b0a070; font-style: italic; }
   <!-- Step indicator -->
   <div class="steps" id="steps">
     <div class="step active" id="step1"><span class="step-num">①</span>Wybierz tekst</div>
-    <div class="step" id="step2"><span class="step-num">②</span>Posłuchaj</div>
-    <div class="step" id="step3"><span class="step-num">③</span>Napisz</div>
-    <div class="step" id="step4"><span class="step-num">④</span>Wyniki</div>
+    <div class="step" id="step2"><span class="step-num">②</span>Posłuchaj i pisz</div>
+    <div class="step" id="step3"><span class="step-num">③</span>Wyniki</div>
   </div>
 
   <!-- PHASE 1 – choose text -->
   <div class="card" id="phase1">
     <div class="results-header">Wybierz poziom dyktanda</div>
     <div class="texts-grid" id="texts-grid"></div>
-    <button class="btn-check" id="btn-start" onclick="startListening()" disabled>Przejdź do odsłuchu →</button>
+    <button class="btn-check" id="btn-start" onclick="startDictation()" disabled>Rozpocznij dyktando →</button>
   </div>
 
-  <!-- PHASE 2 – listen -->
+  <!-- PHASE 2 – listen + write (combined) -->
   <div class="card hidden" id="phase2">
+    <!-- Player always visible -->
     <div class="player-box">
-      <div class="player-title">🔊 Odtwarzacz tekstu</div>
+      <div class="player-title">🔊 Odtwarzacz – słuchaj i pisz jednocześnie</div>
       <div class="player-controls">
-        <button class="btn-play primary" id="btn-speak" onclick="speak()">▶ Odczytaj tekst</button>
+        <button class="btn-play primary" id="btn-speak" onclick="speak()">▶ Odczytaj</button>
         <button class="btn-play secondary" id="btn-pause" onclick="pauseResume()" disabled>⏸ Pauza</button>
-        <button class="btn-play secondary" onclick="stopSpeech()" style="margin-left:auto">■ Stop</button>
+        <button class="btn-play secondary" onclick="stopSpeech()">■ Stop</button>
         <label class="speed-label">Tempo:</label>
         <select class="speed-select" id="speed-select" onchange="updateSpeed()">
           <option value="0.6">Wolno</option>
@@ -483,33 +483,27 @@ textarea::placeholder { color: #b0a070; font-style: italic; }
           <option value="1.0" selected>Normalnie</option>
         </select>
       </div>
-      <div class="progress-audio" id="prog-wrap">
+      <div class="progress-audio">
         <div class="progress-audio-fill" id="prog-fill"></div>
       </div>
-      <div class="status-msg" id="status-msg">Kliknij przycisk, aby usłyszeć tekst dyktanda.</div>
+      <div class="status-msg" id="status-msg">Kliknij ▶ Odczytaj, a następnie zacznij pisać poniżej.</div>
     </div>
-    <div style="text-align:center; font-style:italic; color:#6b5a3a; font-size:0.9rem; margin-bottom:1rem;">
-      Możesz odsłuchać tekst dowolną liczbę razy i w różnym tempie.
-    </div>
-    <button class="btn-check" onclick="goToWrite()">Przejdź do pisania →</button>
-  </div>
 
-  <!-- PHASE 3 – write -->
-  <div class="card hidden" id="phase3">
-    <div style="background:rgba(201,168,76,0.1); border:1px solid rgba(201,168,76,0.3); border-radius:3px; padding:0.8rem 1rem; margin-bottom:1.2rem; font-style:italic; font-size:0.9rem; color:#6b5a3a;">
-      💡 Podczas pisania nie możesz zobaczyć tekstu. Jeśli chcesz ponownie posłuchać, wróć do poprzedniego kroku.
+    <!-- Writing area directly below player -->
+    <div style="margin-top:1.2rem;">
+      <label class="write-label" for="user-input">Twoje dyktando:</label>
+      <textarea id="user-input" placeholder="Pisz tutaj podczas odsłuchu…" oninput="countChars()"></textarea>
+      <div class="char-count" id="char-count">0 znaków</div>
     </div>
-    <label class="write-label" for="user-input">Napisz usłyszany tekst:</label>
-    <textarea id="user-input" placeholder="Zacznij pisać…" oninput="countChars()"></textarea>
-    <div class="char-count" id="char-count">0 znaków</div>
-    <div style="display:flex; justify-content:center; gap:0.8rem; margin-top:1rem; flex-wrap:wrap;">
-      <button class="btn-retry" onclick="goToListen()">← Wróć do odsłuchu</button>
+
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:1.2rem; flex-wrap:wrap; gap:0.8rem;">
+      <button class="btn-retry" onclick="goToPhase1()">⟵ Zmień tekst</button>
       <button class="btn-check" style="margin:0" onclick="checkDictation()">Sprawdź →</button>
     </div>
   </div>
 
-  <!-- PHASE 4 – results -->
-  <div class="card hidden" id="phase4">
+  <!-- PHASE 3 – results -->
+  <div class="card hidden" id="phase3">
     <div class="results-header" id="results-header">Wyniki dyktanda</div>
     <div class="score-row" id="score-row"></div>
     <div class="legend">
@@ -520,7 +514,7 @@ textarea::placeholder { color: #b0a070; font-style: italic; }
     <div class="comparison" id="comparison"></div>
     <div id="errors-section"></div>
     <div style="display:flex; justify-content:center; flex-wrap:wrap; gap:0.8rem; margin-top:1rem;">
-      <button class="btn-retry" onclick="goToListen()">↺ Spróbuj ponownie</button>
+      <button class="btn-retry" onclick="goToWrite()">↺ Spróbuj ponownie</button>
       <button class="btn-retry" onclick="goToPhase1()">⟵ Zmień tekst</button>
     </div>
   </div>
@@ -595,39 +589,35 @@ function selectText(t, el) {
    NAVIGATION
    ============================================================ */
 function setStep(n) {
-  ['step1','step2','step3','step4'].forEach((id, i) => {
+  ['step1','step2','step3'].forEach((id, i) => {
     const el = document.getElementById(id);
     el.className = 'step' + (i + 1 === n ? ' active' : (i + 1 < n ? ' done' : ''));
   });
 }
 
-function startListening() {
+function startDictation() {
   document.getElementById('phase1').classList.add('hidden');
   document.getElementById('phase2').classList.remove('hidden');
+  document.getElementById('user-input').value = '';
+  document.getElementById('char-count').textContent = '0 znaków';
   setStep(2);
 }
 
 function goToWrite() {
-  stopSpeech();
-  document.getElementById('phase2').classList.add('hidden');
-  document.getElementById('phase3').classList.remove('hidden');
-  document.getElementById('user-input').value = '';
-  document.getElementById('char-count').textContent = '0 znaków';
-  setStep(3);
-  setTimeout(() => document.getElementById('user-input').focus(), 100);
-}
-
-function goToListen() {
+  // Already on the combined screen — just reset and show phase2 again
   stopSpeech();
   document.getElementById('phase3').classList.add('hidden');
-  document.getElementById('phase4').classList.add('hidden');
   document.getElementById('phase2').classList.remove('hidden');
+  document.getElementById('user-input').value = '';
+  document.getElementById('char-count').textContent = '0 znaków';
   setStep(2);
+  setTimeout(() => document.getElementById('user-input').focus(), 100);
 }
 
 function goToPhase1() {
   stopSpeech();
-  ['phase2','phase3','phase4'].forEach(id => document.getElementById(id).classList.add('hidden'));
+  document.getElementById('phase2').classList.add('hidden');
+  document.getElementById('phase3').classList.add('hidden');
   document.getElementById('phase1').classList.remove('hidden');
   setStep(1);
 }
@@ -780,9 +770,9 @@ function checkDictation() {
   const pct = Math.round((correct / total) * 100);
 
   // Show results
-  document.getElementById('phase3').classList.add('hidden');
-  document.getElementById('phase4').classList.remove('hidden');
-  setStep(4);
+  document.getElementById('phase2').classList.add('hidden');
+  document.getElementById('phase3').classList.remove('hidden');
+  setStep(3);
 
   // Medal
   let medal = '';
