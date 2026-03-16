@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dyktando – Mitologia Grecka</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;900&family=Crimson+Pro:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #c9a84c;
+  --gold-light: #e8c96d;
+  --gold-dim: #7a5f1e;
+  --ink: #1a1208;
+  --correct: #2e6b2e;
+  --correct-bg: #d6f0d6;
+  --wrong: #8b2020;
+  --wrong-bg: #f8d7da;
+  --neutral-bg: #f7f3eb;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background-color: #0d0a05;
+  background-image:
+    radial-gradient(ellipse at 50% 0%, #2a1f05 0%, transparent 55%),
+    repeating-linear-gradient(0deg, transparent, transparent 40px, rgba(201,168,76,0.03) 40px, rgba(201,168,76,0.03) 41px),
+    repeating-linear-gradient(90deg, transparent, transparent 40px, rgba(201,168,76,0.03) 40px, rgba(201,168,76,0.03) 41px);
+  min-height: 100vh;
+  font-family: 'Crimson Pro', serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 1rem 5rem;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 12% 18%, rgba(255,230,120,0.6) 0%, transparent 100%),
+    radial-gradient(1px 1px at 30% 45%, rgba(255,230,120,0.35) 0%, transparent 100%),
+    radial-gradient(1px 1px at 60% 10%, rgba(255,230,120,0.7) 0%, transparent 100%),
+    radial-gradient(1px 1px at 82% 30%, rgba(255,230,120,0.45) 0%, transparent 100%),
+    radial-gradient(1px 1px at 92% 65%, rgba(255,230,120,0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 45% 75%, rgba(255,230,120,0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 72% 85%, rgba(255,230,120,0.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 18% 90%, rgba(255,230,120,0.35) 0%, transparent 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.container {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 820px;
+}
+
+/* ---- Header ---- */
+header {
+  text-align: center;
+  margin-bottom: 2rem;
+  animation: fadeDown 0.9s ease both;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin: 0.4rem 0;
+}
+.divider::before, .divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--gold), transparent);
+}
+.divider span { color: var(--gold); font-size: 1rem; letter-spacing: 0.3em; }
+
+h1 {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(1.8rem, 5vw, 3rem);
+  font-weight: 900;
+  color: var(--gold-light);
+  text-shadow: 0 0 40px rgba(201,168,76,0.35), 0 2px 4px rgba(0,0,0,0.8);
+  letter-spacing: 0.06em;
+}
+
+.subtitle {
+  font-style: italic;
+  color: rgba(201,168,76,0.6);
+  font-size: 1.05rem;
+  margin-top: 0.3rem;
+  letter-spacing: 0.1em;
+}
+
+/* ---- Steps ---- */
+.steps {
+  display: flex;
+  gap: 0;
+  margin-bottom: 2rem;
+  border: 1px solid var(--gold-dim);
+  border-radius: 4px;
+  overflow: hidden;
+  animation: fadeUp 0.7s 0.2s ease both;
+}
+
+.step {
+  flex: 1;
+  text-align: center;
+  padding: 0.7rem 0.5rem;
+  font-family: 'Cinzel', serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(201,168,76,0.4);
+  background: rgba(255,255,255,0.03);
+  border-right: 1px solid var(--gold-dim);
+  transition: all 0.4s;
+  position: relative;
+}
+.step:last-child { border-right: none; }
+.step.active {
+  color: var(--ink);
+  background: linear-gradient(135deg, #f0e6cc, var(--gold-light));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.5);
+}
+.step.done { color: rgba(201,168,76,0.7); background: rgba(201,168,76,0.08); }
+.step-num {
+  display: block;
+  font-size: 1.1rem;
+  margin-bottom: 0.1rem;
+  line-height: 1;
+}
+
+/* ---- Card ---- */
+.card {
+  background: linear-gradient(150deg, #f7f3eb, #ede5d2);
+  border: 1px solid var(--gold);
+  border-radius: 4px;
+  box-shadow: 0 0 0 4px rgba(201,168,76,0.1), 0 24px 60px rgba(0,0,0,0.65), inset 0 1px 0 rgba(255,255,255,0.6);
+  padding: 2rem 2.5rem;
+  margin-bottom: 1.5rem;
+  animation: fadeUp 0.6s 0.3s ease both;
+  position: relative;
+}
+.card::before { content: '⸻  Ω  ⸻'; position: absolute; bottom: 0.7rem; right: 1.2rem; font-size: 0.7rem; color: var(--gold-dim); opacity: 0.5; letter-spacing: 0.2em; }
+
+/* ---- Texts list ---- */
+.texts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.8rem;
+  margin-bottom: 0.5rem;
+}
+
+.text-option {
+  border: 2px solid rgba(201,168,76,0.3);
+  border-radius: 3px;
+  padding: 0.9rem 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: rgba(255,255,255,0.4);
+}
+.text-option:hover { border-color: var(--gold); background: rgba(255,255,255,0.7); transform: translateY(-2px); }
+.text-option.selected { border-color: var(--gold); background: #fff8e8; box-shadow: 0 0 0 3px rgba(201,168,76,0.15); }
+
+.text-option-title {
+  font-family: 'Cinzel', serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 0.25rem;
+}
+.text-option-diff {
+  font-size: 0.78rem;
+  color: var(--gold-dim);
+  font-style: italic;
+}
+.text-option-count {
+  font-size: 0.75rem;
+  color: #8a7040;
+  margin-top: 0.2rem;
+}
+
+/* ---- Player ---- */
+.player-box {
+  background: rgba(255,255,255,0.5);
+  border: 1px solid rgba(201,168,76,0.3);
+  border-radius: 3px;
+  padding: 1.2rem 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.player-title {
+  font-family: 'Cinzel', serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+  margin-bottom: 0.8rem;
+}
+
+.player-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.btn-play {
+  font-family: 'Cinzel', serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.6rem 1.4rem;
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+}
+
+.btn-play.primary {
+  background: linear-gradient(135deg, #a07820, var(--gold));
+  color: #fff8e8;
+}
+.btn-play.primary:hover { transform: translateY(-1px); box-shadow: 0 5px 16px rgba(0,0,0,0.3); }
+.btn-play.primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+.btn-play.secondary {
+  background: white;
+  color: #5a3e10;
+  border: 1.5px solid rgba(201,168,76,0.5);
+}
+.btn-play.secondary:hover { background: #fff8e8; border-color: var(--gold); }
+
+.speed-label {
+  font-size: 0.82rem;
+  color: #6b5a3a;
+  font-style: italic;
+}
+
+.speed-select {
+  font-family: 'Cinzel', serif;
+  font-size: 0.75rem;
+  padding: 0.35rem 0.6rem;
+  border: 1px solid rgba(201,168,76,0.4);
+  border-radius: 2px;
+  background: white;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.progress-audio {
+  margin-top: 0.8rem;
+  height: 4px;
+  background: rgba(0,0,0,0.1);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.progress-audio-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold-dim), var(--gold-light));
+  border-radius: 10px;
+  width: 0%;
+  transition: width 0.3s;
+}
+
+.status-msg {
+  font-size: 0.85rem;
+  font-style: italic;
+  color: #8a7040;
+  margin-top: 0.5rem;
+  min-height: 1.2em;
+}
+
+/* ---- Textarea ---- */
+.write-label {
+  font-family: 'Cinzel', serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+textarea {
+  width: 100%;
+  min-height: 160px;
+  padding: 1rem;
+  font-family: 'Crimson Pro', serif;
+  font-size: 1.1rem;
+  line-height: 1.7;
+  border: 1.5px solid rgba(201,168,76,0.35);
+  border-radius: 3px;
+  background: rgba(255,255,255,0.7);
+  color: var(--ink);
+  resize: vertical;
+  outline: none;
+  transition: border-color 0.2s;
+}
+textarea:focus { border-color: var(--gold); background: white; box-shadow: 0 0 0 3px rgba(201,168,76,0.1); }
+textarea::placeholder { color: #b0a070; font-style: italic; }
+
+.char-count {
+  text-align: right;
+  font-size: 0.78rem;
+  color: #a08040;
+  margin-top: 0.3rem;
+  font-style: italic;
+}
+
+.btn-check {
+  font-family: 'Cinzel', serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0.75rem 2.5rem;
+  background: linear-gradient(135deg, #a07820, var(--gold));
+  border: none;
+  border-radius: 2px;
+  color: #fff8e8;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.2);
+  transition: all 0.25s;
+  display: block;
+  margin: 1.2rem auto 0;
+}
+.btn-check:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.4); }
+.btn-check:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+/* ---- Results ---- */
+.results-header {
+  font-family: 'Cinzel', serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+  margin-bottom: 1rem;
+}
+
+.score-row {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.2rem;
+  flex-wrap: wrap;
+}
+
+.score-chip {
+  flex: 1;
+  min-width: 100px;
+  text-align: center;
+  padding: 0.7rem;
+  border-radius: 3px;
+  background: rgba(255,255,255,0.5);
+  border: 1px solid rgba(201,168,76,0.25);
+}
+.score-chip .sc-num {
+  font-family: 'Cinzel', serif;
+  font-size: 1.8rem;
+  font-weight: 900;
+  line-height: 1;
+}
+.score-chip .sc-label { font-size: 0.78rem; color: #6b5a3a; font-style: italic; }
+.score-chip.green .sc-num { color: var(--correct); }
+.score-chip.red   .sc-num { color: var(--wrong); }
+.score-chip.gold  .sc-num { color: var(--gold-dim); }
+
+.comparison {
+  line-height: 1.9;
+  font-size: 1.05rem;
+  background: rgba(255,255,255,0.5);
+  border: 1px solid rgba(201,168,76,0.2);
+  border-radius: 3px;
+  padding: 1rem 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.w-ok   { color: var(--ink); }
+.w-err  { background: var(--wrong-bg); color: var(--wrong); border-radius: 2px; padding: 0 2px; text-decoration: underline wavy var(--wrong); }
+.w-miss { background: #fff3cd; color: #856404; border-radius: 2px; padding: 0 2px; font-style: italic; }
+.w-extra{ background: #e2e3ff; color: #3a3aaa; border-radius: 2px; padding: 0 2px; text-decoration: line-through; }
+
+.legend {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  font-size: 0.8rem;
+  color: #6b5a3a;
+  margin-bottom: 1rem;
+  font-style: italic;
+}
+.legend span { display: flex; align-items: center; gap: 0.3rem; }
+
+.errors-list { margin-bottom: 1rem; }
+.error-item {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  font-size: 0.92rem;
+  padding: 0.35rem 0;
+  border-bottom: 1px dashed rgba(201,168,76,0.2);
+}
+.error-item:last-child { border-bottom: none; }
+.err-wrong { color: var(--wrong); font-family: 'Cinzel', serif; font-size: 0.85rem; }
+.err-arrow { color: var(--gold-dim); }
+.err-right { color: var(--correct); font-family: 'Cinzel', serif; font-size: 0.85rem; }
+
+.btn-retry {
+  font-family: 'Cinzel', serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.65rem 1.8rem;
+  background: white;
+  color: #5a3e10;
+  border: 1.5px solid rgba(201,168,76,0.5);
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-right: 0.8rem;
+}
+.btn-retry:hover { background: #fff8e8; border-color: var(--gold); }
+
+.medal { font-size: 1.4rem; margin-right: 0.4rem; }
+
+/* ---- Animations ---- */
+@keyframes fadeDown { from { opacity:0; transform:translateY(-18px); } to { opacity:1; transform:translateY(0); } }
+@keyframes fadeUp   { from { opacity:0; transform:translateY(18px); }  to { opacity:1; transform:translateY(0); } }
+
+.hidden { display: none !important; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <div class="divider"><span>⸻  Ω  ⸻</span></div>
+    <h1>Dyktando</h1>
+    <div class="subtitle">Mitologia grecka – h i ch</div>
+    <div class="divider" style="margin-top:0.5rem"><span>⸻  Ω  ⸻</span></div>
+  </header>
+
+  <!-- Step indicator -->
+  <div class="steps" id="steps">
+    <div class="step active" id="step1"><span class="step-num">①</span>Wybierz tekst</div>
+    <div class="step" id="step2"><span class="step-num">②</span>Posłuchaj</div>
+    <div class="step" id="step3"><span class="step-num">③</span>Napisz</div>
+    <div class="step" id="step4"><span class="step-num">④</span>Wyniki</div>
+  </div>
+
+  <!-- PHASE 1 – choose text -->
+  <div class="card" id="phase1">
+    <div class="results-header">Wybierz poziom dyktanda</div>
+    <div class="texts-grid" id="texts-grid"></div>
+    <button class="btn-check" id="btn-start" onclick="startListening()" disabled>Przejdź do odsłuchu →</button>
+  </div>
+
+  <!-- PHASE 2 – listen -->
+  <div class="card hidden" id="phase2">
+    <div class="player-box">
+      <div class="player-title">🔊 Odtwarzacz tekstu</div>
+      <div class="player-controls">
+        <button class="btn-play primary" id="btn-speak" onclick="speak()">▶ Odczytaj tekst</button>
+        <button class="btn-play secondary" id="btn-pause" onclick="pauseResume()" disabled>⏸ Pauza</button>
+        <button class="btn-play secondary" onclick="stopSpeech()" style="margin-left:auto">■ Stop</button>
+        <label class="speed-label">Tempo:</label>
+        <select class="speed-select" id="speed-select" onchange="updateSpeed()">
+          <option value="0.6">Wolno</option>
+          <option value="0.8">Umiarkowanie</option>
+          <option value="1.0" selected>Normalnie</option>
+        </select>
+      </div>
+      <div class="progress-audio" id="prog-wrap">
+        <div class="progress-audio-fill" id="prog-fill"></div>
+      </div>
+      <div class="status-msg" id="status-msg">Kliknij przycisk, aby usłyszeć tekst dyktanda.</div>
+    </div>
+    <div style="text-align:center; font-style:italic; color:#6b5a3a; font-size:0.9rem; margin-bottom:1rem;">
+      Możesz odsłuchać tekst dowolną liczbę razy i w różnym tempie.
+    </div>
+    <button class="btn-check" onclick="goToWrite()">Przejdź do pisania →</button>
+  </div>
+
+  <!-- PHASE 3 – write -->
+  <div class="card hidden" id="phase3">
+    <div style="background:rgba(201,168,76,0.1); border:1px solid rgba(201,168,76,0.3); border-radius:3px; padding:0.8rem 1rem; margin-bottom:1.2rem; font-style:italic; font-size:0.9rem; color:#6b5a3a;">
+      💡 Podczas pisania nie możesz zobaczyć tekstu. Jeśli chcesz ponownie posłuchać, wróć do poprzedniego kroku.
+    </div>
+    <label class="write-label" for="user-input">Napisz usłyszany tekst:</label>
+    <textarea id="user-input" placeholder="Zacznij pisać…" oninput="countChars()"></textarea>
+    <div class="char-count" id="char-count">0 znaków</div>
+    <div style="display:flex; justify-content:center; gap:0.8rem; margin-top:1rem; flex-wrap:wrap;">
+      <button class="btn-retry" onclick="goToListen()">← Wróć do odsłuchu</button>
+      <button class="btn-check" style="margin:0" onclick="checkDictation()">Sprawdź →</button>
+    </div>
+  </div>
+
+  <!-- PHASE 4 – results -->
+  <div class="card hidden" id="phase4">
+    <div class="results-header" id="results-header">Wyniki dyktanda</div>
+    <div class="score-row" id="score-row"></div>
+    <div class="legend">
+      <span><mark style="background:var(--wrong-bg);color:var(--wrong);padding:0 3px;border-radius:2px;">błąd</mark> – niepoprawne słowo</span>
+      <span><mark style="background:#fff3cd;color:#856404;padding:0 3px;border-radius:2px;">brakujące</mark> – pominięte słowo</span>
+      <span><mark style="background:#e2e3ff;color:#3a3aaa;padding:0 3px;border-radius:2px;">extra</mark> – nadmiarowe słowo</span>
+    </div>
+    <div class="comparison" id="comparison"></div>
+    <div id="errors-section"></div>
+    <div style="display:flex; justify-content:center; flex-wrap:wrap; gap:0.8rem; margin-top:1rem;">
+      <button class="btn-retry" onclick="goToListen()">↺ Spróbuj ponownie</button>
+      <button class="btn-retry" onclick="goToPhase1()">⟵ Zmień tekst</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ============================================================
+   TEXTS
+   ============================================================ */
+const TEXTS = [
+  {
+    id: 'easy',
+    title: 'Bogowie Olimpu',
+    difficulty: 'Łatwy',
+    text: 'Hera była królową Olimpu. Hefajstos pracował przy ogniu. Hermes latał nad całą Helladą. Chaos istniał przed wszystkim.'
+  },
+  {
+    id: 'medium',
+    title: 'Hades i Charon',
+    difficulty: 'Średni',
+    text: 'Hades rządził królestwem umarłych. Charon przewoził dusze przez rzekę Styks. Hydra strzegła wejścia do podziemi. Hermes odprowadzał cienie do Charona. Chaos panował przed narodzinami bogów.'
+  },
+  {
+    id: 'hard',
+    title: 'Opowieść o herosach',
+    difficulty: 'Trudny',
+    text: 'Herakles był synem Zeusa i śmiertelnej kobiety. Chimera siała postrach wśród ludzi, lecz heros ją pokonał. Chejron, mądry centaur, uczył Achillesa sztuki walki. Helios przemierzał niebiańskie sklepienie złotym rydwanem. Echo, smutna nimfa, błąkała się po lasach Hellady i powtarzała słowa Charona.'
+  },
+  {
+    id: 'expert',
+    title: 'Kronika Olimpu',
+    difficulty: 'Ekspercki',
+    text: 'Na początku istniał tylko Chaos. Z niego wyłoniły się Hera, Hestia i Hebe – córki Chronosa. Hefajstos wykuł złoty tron dla Hery, a Hermes przekazał wieści między bogami i ludźmi Hellady. Hydra, potwór Charybdy i Chimera zasiewały strach w sercach herosów. Chejron uczył ich mądrości, Charon zaś czekał cierpliwie przy brzegu Acherontu. Hekate, bogini nocy, czuwała nad tajemnicami Hadesu.'
+  }
+];
+
+let selectedText = null;
+let utterance = null;
+let speaking = false;
+let paused = false;
+let progressInterval = null;
+let speakStart = null;
+let speakDuration = 0;
+
+/* ============================================================
+   INIT
+   ============================================================ */
+function init() {
+  const grid = document.getElementById('texts-grid');
+  TEXTS.forEach(t => {
+    const wordCount = t.text.split(/\s+/).length;
+    const div = document.createElement('div');
+    div.className = 'text-option';
+    div.innerHTML = `
+      <div class="text-option-title">${t.title}</div>
+      <div class="text-option-diff">${t.difficulty}</div>
+      <div class="text-option-count">${wordCount} słów</div>`;
+    div.addEventListener('click', () => selectText(t, div));
+    grid.appendChild(div);
+  });
+}
+
+function selectText(t, el) {
+  document.querySelectorAll('.text-option').forEach(d => d.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedText = t;
+  document.getElementById('btn-start').disabled = false;
+}
+
+/* ============================================================
+   NAVIGATION
+   ============================================================ */
+function setStep(n) {
+  ['step1','step2','step3','step4'].forEach((id, i) => {
+    const el = document.getElementById(id);
+    el.className = 'step' + (i + 1 === n ? ' active' : (i + 1 < n ? ' done' : ''));
+  });
+}
+
+function startListening() {
+  document.getElementById('phase1').classList.add('hidden');
+  document.getElementById('phase2').classList.remove('hidden');
+  setStep(2);
+}
+
+function goToWrite() {
+  stopSpeech();
+  document.getElementById('phase2').classList.add('hidden');
+  document.getElementById('phase3').classList.remove('hidden');
+  document.getElementById('user-input').value = '';
+  document.getElementById('char-count').textContent = '0 znaków';
+  setStep(3);
+  setTimeout(() => document.getElementById('user-input').focus(), 100);
+}
+
+function goToListen() {
+  stopSpeech();
+  document.getElementById('phase3').classList.add('hidden');
+  document.getElementById('phase4').classList.add('hidden');
+  document.getElementById('phase2').classList.remove('hidden');
+  setStep(2);
+}
+
+function goToPhase1() {
+  stopSpeech();
+  ['phase2','phase3','phase4'].forEach(id => document.getElementById(id).classList.add('hidden'));
+  document.getElementById('phase1').classList.remove('hidden');
+  setStep(1);
+}
+
+function countChars() {
+  const len = document.getElementById('user-input').value.length;
+  document.getElementById('char-count').textContent = `${len} znaków`;
+}
+
+/* ============================================================
+   SPEECH
+   ============================================================ */
+function speak() {
+  if (!selectedText) return;
+  if (!window.speechSynthesis) {
+    document.getElementById('status-msg').textContent = 'Twoja przeglądarka nie obsługuje syntezatora mowy.';
+    return;
+  }
+  stopSpeech();
+
+  const rate = parseFloat(document.getElementById('speed-select').value);
+  utterance = new SpeechSynthesisUtterance(selectedText.text);
+  utterance.lang = 'pl-PL';
+  utterance.rate = rate;
+
+  utterance.onstart = () => {
+    speaking = true;
+    paused = false;
+    document.getElementById('btn-speak').disabled = true;
+    document.getElementById('btn-pause').disabled = false;
+    document.getElementById('status-msg').textContent = '🔊 Odczytywanie…';
+
+    // Estimate duration for progress bar
+    const words = selectedText.text.split(/\s+/).length;
+    speakDuration = (words / (rate * 2.5)) * 1000;
+    speakStart = Date.now();
+    clearInterval(progressInterval);
+    progressInterval = setInterval(() => {
+      const elapsed = Date.now() - speakStart;
+      const pct = Math.min((elapsed / speakDuration) * 100, 98);
+      document.getElementById('prog-fill').style.width = pct + '%';
+    }, 100);
+  };
+
+  utterance.onend = () => {
+    speaking = false;
+    paused = false;
+    clearInterval(progressInterval);
+    document.getElementById('prog-fill').style.width = '100%';
+    document.getElementById('btn-speak').disabled = false;
+    document.getElementById('btn-pause').disabled = true;
+    document.getElementById('btn-pause').textContent = '⏸ Pauza';
+    document.getElementById('status-msg').textContent = '✓ Odczytano. Możesz posłuchać ponownie lub przejść do pisania.';
+    setTimeout(() => document.getElementById('prog-fill').style.width = '0%', 1500);
+  };
+
+  utterance.onerror = () => {
+    document.getElementById('status-msg').textContent = 'Błąd syntezatora mowy. Spróbuj innej przeglądarki (Chrome/Edge).';
+    document.getElementById('btn-speak').disabled = false;
+    document.getElementById('btn-pause').disabled = true;
+    clearInterval(progressInterval);
+  };
+
+  window.speechSynthesis.speak(utterance);
+}
+
+function pauseResume() {
+  if (!window.speechSynthesis) return;
+  if (paused) {
+    window.speechSynthesis.resume();
+    paused = false;
+    document.getElementById('btn-pause').textContent = '⏸ Pauza';
+    document.getElementById('status-msg').textContent = '🔊 Odczytywanie…';
+    speakStart = Date.now() - (speakDuration * (parseFloat(document.getElementById('prog-fill').style.width) / 100));
+    progressInterval = setInterval(() => {
+      const elapsed = Date.now() - speakStart;
+      const pct = Math.min((elapsed / speakDuration) * 100, 98);
+      document.getElementById('prog-fill').style.width = pct + '%';
+    }, 100);
+  } else {
+    window.speechSynthesis.pause();
+    paused = true;
+    clearInterval(progressInterval);
+    document.getElementById('btn-pause').textContent = '▶ Wznów';
+    document.getElementById('status-msg').textContent = '⏸ Pauza';
+  }
+}
+
+function stopSpeech() {
+  if (window.speechSynthesis) window.speechSynthesis.cancel();
+  clearInterval(progressInterval);
+  speaking = false;
+  paused = false;
+  document.getElementById('btn-speak').disabled = false;
+  document.getElementById('btn-pause').disabled = true;
+  document.getElementById('btn-pause').textContent = '⏸ Pauza';
+  document.getElementById('prog-fill').style.width = '0%';
+  document.getElementById('status-msg').textContent = 'Kliknij przycisk, aby usłyszeć tekst dyktanda.';
+}
+
+function updateSpeed() {
+  if (speaking) { stopSpeech(); }
+}
+
+/* ============================================================
+   CHECKING
+   ============================================================ */
+function normalize(s) {
+  return s.trim()
+    .toLowerCase()
+    .replace(/[.,!?;:„"'"()\-–—…]/g, '');
+}
+
+function checkDictation() {
+  const userRaw = document.getElementById('user-input').value.trim();
+  if (!userRaw) return;
+
+  const origWords = selectedText.text.split(/\s+/);
+  const userWords = userRaw.split(/\s+/);
+
+  // LCS-based alignment
+  const alignment = align(origWords, userWords);
+
+  let correct = 0, errors = [], extraCount = 0, missCount = 0;
+  const compHTML = [];
+  const errorDetails = [];
+
+  alignment.forEach(pair => {
+    const [orig, user] = pair;
+    if (orig && user) {
+      if (normalize(orig) === normalize(user)) {
+        compHTML.push(`<span class="w-ok">${orig}</span>`);
+        correct++;
+      } else {
+        compHTML.push(`<span class="w-err" title="Napisałeś: ${user}">${user}</span>`);
+        errors.push({ wrong: user, right: orig });
+        errorDetails.push({ wrong: user, right: orig });
+      }
+    } else if (orig && !user) {
+      compHTML.push(`<span class="w-miss">[${orig}]</span>`);
+      missCount++;
+      errors.push({ wrong: '–', right: orig });
+    } else if (!orig && user) {
+      compHTML.push(`<span class="w-extra">${user}</span>`);
+      extraCount++;
+    }
+  });
+
+  const total = origWords.length;
+  const pct = Math.round((correct / total) * 100);
+
+  // Show results
+  document.getElementById('phase3').classList.add('hidden');
+  document.getElementById('phase4').classList.remove('hidden');
+  setStep(4);
+
+  // Medal
+  let medal = '';
+  if (pct === 100) medal = '<span class="medal">🏆</span>';
+  else if (pct >= 80) medal = '<span class="medal">🥇</span>';
+  else if (pct >= 60) medal = '<span class="medal">🥈</span>';
+  else medal = '<span class="medal">🥉</span>';
+
+  document.getElementById('results-header').innerHTML = `${medal}Wyniki dyktanda – ${selectedText.title}`;
+
+  document.getElementById('score-row').innerHTML = `
+    <div class="score-chip gold"><div class="sc-num">${pct}%</div><div class="sc-label">wynik ogólny</div></div>
+    <div class="score-chip green"><div class="sc-num">${correct}</div><div class="sc-label">poprawnych słów</div></div>
+    <div class="score-chip red"><div class="sc-num">${errors.length}</div><div class="sc-label">błędów</div></div>
+    <div class="score-chip" style="border-color:rgba(201,168,76,0.25)"><div class="sc-num" style="color:#856404">${missCount}</div><div class="sc-label">pominiętych</div></div>
+  `;
+
+  document.getElementById('comparison').innerHTML = compHTML.join(' ');
+
+  const errSec = document.getElementById('errors-section');
+  if (errorDetails.length === 0) {
+    errSec.innerHTML = `<div style="text-align:center;font-style:italic;color:var(--correct);font-size:1.05rem;padding:0.8rem;">✓ Brawo! Brak błędów ortograficznych.</div>`;
+  } else {
+    // Highlight ch/h errors specially
+    const chHErrors = errorDetails.filter(e => {
+      const n1 = normalize(e.wrong), n2 = normalize(e.right);
+      return n1 !== n2 && (
+        n1.replace('ch','h') === n2 || n1.replace('h','ch') === n2 ||
+        n2.replace('ch','h') === n1 || n2.replace('h','ch') === n1
+      );
+    });
+    const otherErrors = errorDetails.filter(e => !chHErrors.includes(e));
+
+    let html = `<div class="results-header" style="margin-top:0.5rem">Poprawki</div><div class="errors-list">`;
+    errorDetails.forEach(e => {
+      const isCh = chHErrors.includes(e);
+      html += `<div class="error-item">
+        <span class="err-wrong">${e.wrong === '–' ? '<em>brak</em>' : e.wrong}</span>
+        <span class="err-arrow">→</span>
+        <span class="err-right">${e.right}</span>
+        ${isCh ? '<span style="font-size:0.75rem;background:#fff0d0;color:#7a5500;padding:0 5px;border-radius:10px;font-style:italic;">h / ch</span>' : ''}
+      </div>`;
+    });
+    html += `</div>`;
+    errSec.innerHTML = html;
+  }
+}
+
+/* ============================================================
+   ALIGNMENT (LCS-based)
+   ============================================================ */
+function align(orig, user) {
+  const n = orig.length, m = user.length;
+  // Build LCS table
+  const dp = Array.from({length: n+1}, () => new Array(m+1).fill(0));
+  for (let i = 1; i <= n; i++)
+    for (let j = 1; j <= m; j++)
+      if (normalize(orig[i-1]) === normalize(user[j-1])) dp[i][j] = dp[i-1][j-1] + 1;
+      else dp[i][j] = Math.max(dp[i-1][j], dp[i][j-1]);
+
+  // Traceback
+  const result = [];
+  let i = n, j = m;
+  while (i > 0 || j > 0) {
+    if (i > 0 && j > 0 && normalize(orig[i-1]) === normalize(user[j-1])) {
+      result.unshift([orig[i-1], user[j-1]]);
+      i--; j--;
+    } else if (j > 0 && (i === 0 || dp[i][j-1] >= dp[i-1][j])) {
+      result.unshift([null, user[j-1]]);
+      j--;
+    } else {
+      result.unshift([orig[i-1], null]);
+      i--;
+    }
+  }
+  return result;
+}
+
+/* ============================================================
+   START
+   ============================================================ */
+init();
+</script>
+</body>
+</html>
