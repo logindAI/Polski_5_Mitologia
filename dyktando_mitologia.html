@@ -12,14 +12,10 @@
   --gold-dim: #7a5f1e;
   --ink: #1a1208;
   --correct: #2e6b2e;
-  --correct-bg: #d6f0d6;
   --wrong: #8b2020;
   --wrong-bg: #f8d7da;
-  --neutral-bg: #f7f3eb;
 }
-
 * { box-sizing: border-box; margin: 0; padding: 0; }
-
 body {
   background-color: #0d0a05;
   background-image:
@@ -28,418 +24,157 @@ body {
     repeating-linear-gradient(90deg, transparent, transparent 40px, rgba(201,168,76,0.03) 40px, rgba(201,168,76,0.03) 41px);
   min-height: 100vh;
   font-family: 'Crimson Pro', serif;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  display: flex; flex-direction: column; align-items: center;
   padding: 2rem 1rem 5rem;
 }
-
 body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
+  content: ''; position: fixed; inset: 0;
   background-image:
     radial-gradient(1px 1px at 12% 18%, rgba(255,230,120,0.6) 0%, transparent 100%),
     radial-gradient(1px 1px at 30% 45%, rgba(255,230,120,0.35) 0%, transparent 100%),
     radial-gradient(1px 1px at 60% 10%, rgba(255,230,120,0.7) 0%, transparent 100%),
     radial-gradient(1px 1px at 82% 30%, rgba(255,230,120,0.45) 0%, transparent 100%),
-    radial-gradient(1px 1px at 92% 65%, rgba(255,230,120,0.4) 0%, transparent 100%),
     radial-gradient(1px 1px at 45% 75%, rgba(255,230,120,0.3) 0%, transparent 100%),
     radial-gradient(1px 1px at 72% 85%, rgba(255,230,120,0.5) 0%, transparent 100%),
     radial-gradient(1px 1px at 18% 90%, rgba(255,230,120,0.35) 0%, transparent 100%);
-  pointer-events: none;
-  z-index: 0;
+  pointer-events: none; z-index: 0;
 }
+.container { position: relative; z-index: 1; width: 100%; max-width: 820px; }
 
-.container {
-  position: relative;
-  z-index: 1;
-  width: 100%;
-  max-width: 820px;
-}
-
-/* ---- Header ---- */
-header {
-  text-align: center;
-  margin-bottom: 2rem;
-  animation: fadeDown 0.9s ease both;
-}
-
-.divider {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  margin: 0.4rem 0;
-}
-.divider::before, .divider::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: linear-gradient(to right, transparent, var(--gold), transparent);
-}
+/* header */
+header { text-align: center; margin-bottom: 2rem; animation: fadeDown 0.9s ease both; }
+.divider { display: flex; align-items: center; justify-content: center; gap: 1rem; margin: 0.4rem 0; }
+.divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: linear-gradient(to right, transparent, var(--gold), transparent); }
 .divider span { color: var(--gold); font-size: 1rem; letter-spacing: 0.3em; }
+h1 { font-family: 'Cinzel', serif; font-size: clamp(1.8rem, 5vw, 3rem); font-weight: 900; color: var(--gold-light); text-shadow: 0 0 40px rgba(201,168,76,0.35), 0 2px 4px rgba(0,0,0,0.8); letter-spacing: 0.06em; }
+.subtitle { font-style: italic; color: rgba(201,168,76,0.6); font-size: 1.05rem; margin-top: 0.3rem; letter-spacing: 0.1em; }
 
-h1 {
-  font-family: 'Cinzel', serif;
-  font-size: clamp(1.8rem, 5vw, 3rem);
-  font-weight: 900;
-  color: var(--gold-light);
-  text-shadow: 0 0 40px rgba(201,168,76,0.35), 0 2px 4px rgba(0,0,0,0.8);
-  letter-spacing: 0.06em;
-}
-
-.subtitle {
-  font-style: italic;
-  color: rgba(201,168,76,0.6);
-  font-size: 1.05rem;
-  margin-top: 0.3rem;
-  letter-spacing: 0.1em;
-}
-
-/* ---- Steps ---- */
-.steps {
-  display: flex;
-  gap: 0;
-  margin-bottom: 2rem;
-  border: 1px solid var(--gold-dim);
-  border-radius: 4px;
-  overflow: hidden;
-  animation: fadeUp 0.7s 0.2s ease both;
-}
-
-.step {
-  flex: 1;
-  text-align: center;
-  padding: 0.7rem 0.5rem;
-  font-family: 'Cinzel', serif;
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: rgba(201,168,76,0.4);
-  background: rgba(255,255,255,0.03);
-  border-right: 1px solid var(--gold-dim);
-  transition: all 0.4s;
-  position: relative;
-}
+/* steps */
+.steps { display: flex; margin-bottom: 2rem; border: 1px solid var(--gold-dim); border-radius: 4px; overflow: hidden; animation: fadeUp 0.7s 0.2s ease both; }
+.step { flex: 1; text-align: center; padding: 0.7rem 0.5rem; font-family: 'Cinzel', serif; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(201,168,76,0.4); background: rgba(255,255,255,0.03); border-right: 1px solid var(--gold-dim); transition: all 0.4s; }
 .step:last-child { border-right: none; }
-.step.active {
-  color: var(--ink);
-  background: linear-gradient(135deg, #f0e6cc, var(--gold-light));
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.5);
-}
-.step.done { color: rgba(201,168,76,0.7); background: rgba(201,168,76,0.08); }
-.step-num {
-  display: block;
-  font-size: 1.1rem;
-  margin-bottom: 0.1rem;
-  line-height: 1;
-}
+.step.active { color: var(--ink); background: linear-gradient(135deg, #f0e6cc, var(--gold-light)); }
+.step.done   { color: rgba(201,168,76,0.7); background: rgba(201,168,76,0.08); }
+.step-num    { display: block; font-size: 1.1rem; margin-bottom: 0.1rem; line-height: 1; }
 
-/* ---- Card ---- */
-.card {
-  background: linear-gradient(150deg, #f7f3eb, #ede5d2);
-  border: 1px solid var(--gold);
-  border-radius: 4px;
-  box-shadow: 0 0 0 4px rgba(201,168,76,0.1), 0 24px 60px rgba(0,0,0,0.65), inset 0 1px 0 rgba(255,255,255,0.6);
-  padding: 2rem 2.5rem;
-  margin-bottom: 1.5rem;
-  animation: fadeUp 0.6s 0.3s ease both;
-  position: relative;
-}
-.card::before { content: '⸻  Ω  ⸻'; position: absolute; bottom: 0.7rem; right: 1.2rem; font-size: 0.7rem; color: var(--gold-dim); opacity: 0.5; letter-spacing: 0.2em; }
+/* card */
+.card { background: linear-gradient(150deg, #f7f3eb, #ede5d2); border: 1px solid var(--gold); border-radius: 4px; box-shadow: 0 0 0 4px rgba(201,168,76,0.1), 0 24px 60px rgba(0,0,0,0.65), inset 0 1px 0 rgba(255,255,255,0.6); padding: 2rem 2.5rem; margin-bottom: 1.5rem; animation: fadeUp 0.5s ease both; position: relative; }
+.card::after { content: '⸻  Ω  ⸻'; position: absolute; bottom: 0.7rem; right: 1.2rem; font-size: 0.65rem; color: var(--gold-dim); opacity: 0.4; letter-spacing: 0.2em; }
 
-/* ---- Texts list ---- */
-.texts-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 0.8rem;
-  margin-bottom: 0.5rem;
-}
-
-.text-option {
-  border: 2px solid rgba(201,168,76,0.3);
-  border-radius: 3px;
-  padding: 0.9rem 1rem;
-  cursor: pointer;
-  transition: all 0.2s;
-  background: rgba(255,255,255,0.4);
-}
-.text-option:hover { border-color: var(--gold); background: rgba(255,255,255,0.7); transform: translateY(-2px); }
+/* text selection */
+.texts-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.8rem; margin-bottom: 1.2rem; }
+.text-option { border: 2px solid rgba(201,168,76,0.3); border-radius: 3px; padding: 0.9rem 1rem; cursor: pointer; transition: all 0.2s; background: rgba(255,255,255,0.4); }
+.text-option:hover    { border-color: var(--gold); background: rgba(255,255,255,0.7); transform: translateY(-2px); }
 .text-option.selected { border-color: var(--gold); background: #fff8e8; box-shadow: 0 0 0 3px rgba(201,168,76,0.15); }
+.text-option-title { font-family: 'Cinzel', serif; font-size: 0.85rem; font-weight: 600; color: var(--ink); margin-bottom: 0.25rem; }
+.text-option-diff  { font-size: 0.78rem; color: var(--gold-dim); font-style: italic; }
+.text-option-count { font-size: 0.75rem; color: #8a7040; margin-top: 0.2rem; }
 
-.text-option-title {
-  font-family: 'Cinzel', serif;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--ink);
-  margin-bottom: 0.25rem;
-}
-.text-option-diff {
-  font-size: 0.78rem;
-  color: var(--gold-dim);
-  font-style: italic;
-}
-.text-option-count {
-  font-size: 0.75rem;
-  color: #8a7040;
-  margin-top: 0.2rem;
-}
-
-/* ---- Player ---- */
-.player-box {
-  background: rgba(255,255,255,0.5);
-  border: 1px solid rgba(201,168,76,0.3);
-  border-radius: 3px;
-  padding: 1.2rem 1.5rem;
-  margin-bottom: 1rem;
-}
-
-.player-title {
-  font-family: 'Cinzel', serif;
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--gold-dim);
-  margin-bottom: 0.8rem;
-}
-
-.player-controls {
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-  flex-wrap: wrap;
-}
-
-.btn-play {
-  font-family: 'Cinzel', serif;
-  font-size: 0.8rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  padding: 0.6rem 1.4rem;
-  border: none;
-  border-radius: 2px;
-  cursor: pointer;
-  transition: all 0.2s;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.2);
-}
-
-.btn-play.primary {
-  background: linear-gradient(135deg, #a07820, var(--gold));
-  color: #fff8e8;
-}
-.btn-play.primary:hover { transform: translateY(-1px); box-shadow: 0 5px 16px rgba(0,0,0,0.3); }
-.btn-play.primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-
-.btn-play.secondary {
-  background: white;
-  color: #5a3e10;
-  border: 1.5px solid rgba(201,168,76,0.5);
-}
+/* player */
+.player-box { background: rgba(255,255,255,0.5); border: 1px solid rgba(201,168,76,0.3); border-radius: 3px; padding: 1.2rem 1.5rem; margin-bottom: 1.2rem; }
+.player-title { font-family: 'Cinzel', serif; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold-dim); margin-bottom: 0.8rem; }
+.player-controls { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
+.btn-play { font-family: 'Cinzel', serif; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.55rem 1.1rem; border: none; border-radius: 2px; cursor: pointer; transition: all 0.2s; }
+.btn-play.primary   { background: linear-gradient(135deg, #a07820, var(--gold)); color: #fff8e8; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+.btn-play.primary:hover:not(:disabled) { transform: translateY(-1px); }
+.btn-play.primary:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-play.secondary { background: white; color: #5a3e10; border: 1.5px solid rgba(201,168,76,0.45); }
 .btn-play.secondary:hover { background: #fff8e8; border-color: var(--gold); }
+.speed-label  { font-size: 0.82rem; color: #6b5a3a; font-style: italic; }
+.speed-select { font-family: 'Cinzel', serif; font-size: 0.75rem; padding: 0.35rem 0.6rem; border: 1px solid rgba(201,168,76,0.4); border-radius: 2px; background: white; color: var(--ink); cursor: pointer; }
+.progress-audio { margin-top: 0.8rem; height: 4px; background: rgba(0,0,0,0.1); border-radius: 10px; overflow: hidden; }
+.progress-audio-fill { height: 100%; background: linear-gradient(90deg, var(--gold-dim), var(--gold-light)); border-radius: 10px; width: 0%; transition: width 0.3s; }
+.status-msg { font-size: 0.85rem; font-style: italic; color: #8a7040; margin-top: 0.6rem; min-height: 1.2em; }
 
-.speed-label {
-  font-size: 0.82rem;
-  color: #6b5a3a;
-  font-style: italic;
-}
-
-.speed-select {
-  font-family: 'Cinzel', serif;
-  font-size: 0.75rem;
-  padding: 0.35rem 0.6rem;
-  border: 1px solid rgba(201,168,76,0.4);
-  border-radius: 2px;
-  background: white;
-  color: var(--ink);
-  cursor: pointer;
-}
-
-.progress-audio {
-  margin-top: 0.8rem;
-  height: 4px;
-  background: rgba(0,0,0,0.1);
-  border-radius: 10px;
-  overflow: hidden;
-}
-.progress-audio-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--gold-dim), var(--gold-light));
-  border-radius: 10px;
-  width: 0%;
-  transition: width 0.3s;
-}
-
-.status-msg {
-  font-size: 0.85rem;
-  font-style: italic;
-  color: #8a7040;
-  margin-top: 0.5rem;
-  min-height: 1.2em;
-}
-
-/* ---- Textarea ---- */
-.write-label {
-  font-family: 'Cinzel', serif;
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--gold-dim);
-  margin-bottom: 0.5rem;
-  display: block;
-}
-
-textarea {
-  width: 100%;
-  min-height: 160px;
-  padding: 1rem;
-  font-family: 'Crimson Pro', serif;
-  font-size: 1.1rem;
-  line-height: 1.7;
-  border: 1.5px solid rgba(201,168,76,0.35);
-  border-radius: 3px;
-  background: rgba(255,255,255,0.7);
-  color: var(--ink);
-  resize: vertical;
-  outline: none;
-  transition: border-color 0.2s;
-}
+/* textarea */
+.write-label { font-family: 'Cinzel', serif; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold-dim); margin-bottom: 0.5rem; display: block; }
+textarea { width: 100%; min-height: 160px; padding: 1rem; font-family: 'Crimson Pro', serif; font-size: 1.1rem; line-height: 1.7; border: 1.5px solid rgba(201,168,76,0.35); border-radius: 3px; background: rgba(255,255,255,0.7); color: var(--ink); resize: vertical; outline: none; transition: border-color 0.2s; }
 textarea:focus { border-color: var(--gold); background: white; box-shadow: 0 0 0 3px rgba(201,168,76,0.1); }
 textarea::placeholder { color: #b0a070; font-style: italic; }
+.char-count { text-align: right; font-size: 0.78rem; color: #a08040; margin-top: 0.3rem; font-style: italic; }
 
-.char-count {
-  text-align: right;
-  font-size: 0.78rem;
-  color: #a08040;
-  margin-top: 0.3rem;
-  font-style: italic;
+/* ---- Text reveal panel (animated) ---- */
+.reveal-panel {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 0.45s cubic-bezier(0.4,0,0.2,1), opacity 0.3s ease;
+  margin-top: 0;
 }
-
-.btn-check {
-  font-family: 'Cinzel', serif;
-  font-size: 0.85rem;
-  font-weight: 600;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  padding: 0.75rem 2.5rem;
-  background: linear-gradient(135deg, #a07820, var(--gold));
-  border: none;
-  border-radius: 2px;
-  color: #fff8e8;
-  cursor: pointer;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.2);
-  transition: all 0.25s;
-  display: block;
-  margin: 1.2rem auto 0;
+.reveal-panel.open {
+  max-height: 500px;
+  opacity: 1;
+  margin-top: 1rem;
 }
-.btn-check:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.4); }
-.btn-check:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
-
-/* ---- Results ---- */
-.results-header {
+.reveal-inner {
+  background: #fffbf0;
+  border: 1.5px solid var(--gold);
+  border-radius: 3px;
+  padding: 1rem 1.2rem;
+}
+.reveal-heading {
   font-family: 'Cinzel', serif;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 600;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--gold-dim);
-  margin-bottom: 1rem;
+  margin-bottom: 0.6rem;
 }
+.reveal-body { font-family: 'Crimson Pro', serif; font-size: 1.08rem; line-height: 1.9; color: var(--ink); }
+.reveal-body .hi { color: #7a3a00; background: rgba(201,168,76,0.22); border-radius: 2px; padding: 0 2px; font-weight: 600; }
 
-.score-row {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 1.2rem;
-  flex-wrap: wrap;
+/* buttons */
+.btn-main {
+  font-family: 'Cinzel', serif; font-size: 0.85rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase;
+  padding: 0.75rem 2rem; background: linear-gradient(135deg, #a07820, var(--gold)); border: none; border-radius: 2px;
+  color: #fff8e8; cursor: pointer; box-shadow: 0 4px 16px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.2); transition: all 0.25s;
 }
+.btn-main:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.4); }
+.btn-main:disabled { opacity: 0.4; cursor: not-allowed; }
 
-.score-chip {
-  flex: 1;
-  min-width: 100px;
-  text-align: center;
-  padding: 0.7rem;
-  border-radius: 3px;
-  background: rgba(255,255,255,0.5);
-  border: 1px solid rgba(201,168,76,0.25);
+.btn-ghost {
+  font-family: 'Cinzel', serif; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+  padding: 0.6rem 1.4rem; background: white; color: #5a3e10; border: 1.5px solid rgba(201,168,76,0.45); border-radius: 2px; cursor: pointer; transition: all 0.2s;
 }
-.score-chip .sc-num {
-  font-family: 'Cinzel', serif;
-  font-size: 1.8rem;
-  font-weight: 900;
-  line-height: 1;
+.btn-ghost:hover { background: #fff8e8; border-color: var(--gold); }
+
+.btn-reveal {
+  font-family: 'Cinzel', serif; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+  padding: 0.6rem 1.4rem; background: rgba(255,255,255,0.55); color: var(--gold-dim);
+  border: 1.5px solid var(--gold-dim); border-radius: 2px; cursor: pointer; transition: all 0.2s;
 }
+.btn-reveal:hover, .btn-reveal.open { background: #fffbf0; border-color: var(--gold); color: #5a3a00; }
+
+/* section label */
+.section-label { font-family: 'Cinzel', serif; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold-dim); margin-bottom: 1rem; }
+
+/* results */
+.score-row { display: flex; gap: 1rem; margin-bottom: 1.2rem; flex-wrap: wrap; }
+.score-chip { flex: 1; min-width: 90px; text-align: center; padding: 0.7rem; border-radius: 3px; background: rgba(255,255,255,0.5); border: 1px solid rgba(201,168,76,0.25); }
+.score-chip .sc-num   { font-family: 'Cinzel', serif; font-size: 1.8rem; font-weight: 900; line-height: 1; }
 .score-chip .sc-label { font-size: 0.78rem; color: #6b5a3a; font-style: italic; }
 .score-chip.green .sc-num { color: var(--correct); }
 .score-chip.red   .sc-num { color: var(--wrong); }
 .score-chip.gold  .sc-num { color: var(--gold-dim); }
-
-.comparison {
-  line-height: 1.9;
-  font-size: 1.05rem;
-  background: rgba(255,255,255,0.5);
-  border: 1px solid rgba(201,168,76,0.2);
-  border-radius: 3px;
-  padding: 1rem 1.2rem;
-  margin-bottom: 1rem;
-}
-
-.w-ok   { color: var(--ink); }
-.w-err  { background: var(--wrong-bg); color: var(--wrong); border-radius: 2px; padding: 0 2px; text-decoration: underline wavy var(--wrong); }
-.w-miss { background: #fff3cd; color: #856404; border-radius: 2px; padding: 0 2px; font-style: italic; }
-.w-extra{ background: #e2e3ff; color: #3a3aaa; border-radius: 2px; padding: 0 2px; text-decoration: line-through; }
-
-.legend {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-  font-size: 0.8rem;
-  color: #6b5a3a;
-  margin-bottom: 1rem;
-  font-style: italic;
-}
-.legend span { display: flex; align-items: center; gap: 0.3rem; }
-
-.errors-list { margin-bottom: 1rem; }
-.error-item {
-  display: flex;
-  align-items: baseline;
-  gap: 0.5rem;
-  font-size: 0.92rem;
-  padding: 0.35rem 0;
-  border-bottom: 1px dashed rgba(201,168,76,0.2);
-}
+.legend { display: flex; gap: 1rem; flex-wrap: wrap; font-size: 0.8rem; color: #6b5a3a; margin-bottom: 1rem; font-style: italic; }
+.comparison { line-height: 2; font-size: 1.05rem; background: rgba(255,255,255,0.5); border: 1px solid rgba(201,168,76,0.2); border-radius: 3px; padding: 1rem 1.2rem; margin-bottom: 1rem; }
+.w-ok    { color: var(--ink); }
+.w-err   { background: var(--wrong-bg); color: var(--wrong); border-radius: 2px; padding: 0 2px; text-decoration: underline wavy var(--wrong); }
+.w-miss  { background: #fff3cd; color: #856404; border-radius: 2px; padding: 0 2px; font-style: italic; }
+.w-extra { background: #e2e3ff; color: #3a3aaa; border-radius: 2px; padding: 0 2px; text-decoration: line-through; }
+.errors-list { margin-bottom: 0.5rem; }
+.error-item { display: flex; align-items: center; gap: 0.6rem; font-size: 0.92rem; padding: 0.35rem 0; border-bottom: 1px dashed rgba(201,168,76,0.2); }
 .error-item:last-child { border-bottom: none; }
 .err-wrong { color: var(--wrong); font-family: 'Cinzel', serif; font-size: 0.85rem; }
 .err-arrow { color: var(--gold-dim); }
 .err-right { color: var(--correct); font-family: 'Cinzel', serif; font-size: 0.85rem; }
+.err-tag   { font-size: 0.72rem; background: #fff0d0; color: #7a5500; padding: 0 6px; border-radius: 10px; font-style: italic; }
+.medal     { font-size: 1.3rem; margin-right: 0.3rem; }
 
-.btn-retry {
-  font-family: 'Cinzel', serif;
-  font-size: 0.8rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  padding: 0.65rem 1.8rem;
-  background: white;
-  color: #5a3e10;
-  border: 1.5px solid rgba(201,168,76,0.5);
-  border-radius: 2px;
-  cursor: pointer;
-  transition: all 0.2s;
-  margin-right: 0.8rem;
-}
-.btn-retry:hover { background: #fff8e8; border-color: var(--gold); }
-
-.medal { font-size: 1.4rem; margin-right: 0.4rem; }
-
-/* ---- Animations ---- */
+/* animations */
 @keyframes fadeDown { from { opacity:0; transform:translateY(-18px); } to { opacity:1; transform:translateY(0); } }
-@keyframes fadeUp   { from { opacity:0; transform:translateY(18px); }  to { opacity:1; transform:translateY(0); } }
-
+@keyframes fadeUp   { from { opacity:0; transform:translateY(18px);  } to { opacity:1; transform:translateY(0); } }
 .hidden { display: none !important; }
 </style>
 </head>
@@ -453,27 +188,28 @@ textarea::placeholder { color: #b0a070; font-style: italic; }
     <div class="divider" style="margin-top:0.5rem"><span>⸻  Ω  ⸻</span></div>
   </header>
 
-  <!-- Step indicator -->
-  <div class="steps" id="steps">
+  <div class="steps">
     <div class="step active" id="step1"><span class="step-num">①</span>Wybierz tekst</div>
-    <div class="step" id="step2"><span class="step-num">②</span>Posłuchaj i pisz</div>
-    <div class="step" id="step3"><span class="step-num">③</span>Wyniki</div>
+    <div class="step"        id="step2"><span class="step-num">②</span>Posłuchaj i pisz</div>
+    <div class="step"        id="step3"><span class="step-num">③</span>Wyniki</div>
   </div>
 
-  <!-- PHASE 1 – choose text -->
+  <!-- ═══ PHASE 1 ═══ -->
   <div class="card" id="phase1">
-    <div class="results-header">Wybierz poziom dyktanda</div>
+    <div class="section-label">Wybierz poziom dyktanda</div>
     <div class="texts-grid" id="texts-grid"></div>
-    <button class="btn-check" id="btn-start" onclick="startDictation()" disabled>Rozpocznij dyktando →</button>
+    <div style="text-align:center">
+      <button class="btn-main" id="btn-start" onclick="startDictation()" disabled>Rozpocznij dyktando →</button>
+    </div>
   </div>
 
-  <!-- PHASE 2 – listen + write (combined) -->
+  <!-- ═══ PHASE 2 – listen + write ═══ -->
   <div class="card hidden" id="phase2">
-    <!-- Player always visible -->
+
     <div class="player-box">
-      <div class="player-title">🔊 Odtwarzacz – słuchaj i pisz jednocześnie</div>
+      <div class="player-title">🔊 Odtwarzacz — słuchaj i pisz jednocześnie</div>
       <div class="player-controls">
-        <button class="btn-play primary" id="btn-speak" onclick="speak()">▶ Odczytaj</button>
+        <button class="btn-play primary"   id="btn-speak" onclick="speak()">▶ Odczytaj</button>
         <button class="btn-play secondary" id="btn-pause" onclick="pauseResume()" disabled>⏸ Pauza</button>
         <button class="btn-play secondary" onclick="stopSpeech()">■ Stop</button>
         <label class="speed-label">Tempo:</label>
@@ -483,377 +219,292 @@ textarea::placeholder { color: #b0a070; font-style: italic; }
           <option value="1.0" selected>Normalnie</option>
         </select>
       </div>
-      <div class="progress-audio">
-        <div class="progress-audio-fill" id="prog-fill"></div>
-      </div>
+      <div class="progress-audio"><div class="progress-audio-fill" id="prog-fill"></div></div>
       <div class="status-msg" id="status-msg">Kliknij ▶ Odczytaj, a następnie zacznij pisać poniżej.</div>
     </div>
 
-    <!-- Writing area directly below player -->
-    <div style="margin-top:1.2rem;">
-      <label class="write-label" for="user-input">Twoje dyktando:</label>
-      <textarea id="user-input" placeholder="Pisz tutaj podczas odsłuchu…" oninput="countChars()"></textarea>
-      <div class="char-count" id="char-count">0 znaków</div>
+    <label class="write-label" for="user-input">Twoje dyktando:</label>
+    <textarea id="user-input" placeholder="Pisz tutaj podczas odsłuchu…" oninput="countChars()"></textarea>
+    <div class="char-count" id="char-count">0 znaków</div>
+
+    <!-- Reveal panel (write) -->
+    <div class="reveal-panel" id="reveal-write">
+      <div class="reveal-inner">
+        <div class="reveal-heading">📜 Pełny tekst dyktanda</div>
+        <div class="reveal-body" id="reveal-write-body"></div>
+      </div>
     </div>
 
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:1.2rem; flex-wrap:wrap; gap:0.8rem;">
-      <button class="btn-retry" onclick="goToPhase1()">⟵ Zmień tekst</button>
-      <button class="btn-check" style="margin:0" onclick="checkDictation()">Sprawdź →</button>
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:1.2rem; flex-wrap:wrap; gap:0.7rem;">
+      <div style="display:flex; gap:0.6rem; flex-wrap:wrap;">
+        <button class="btn-ghost"  onclick="goToPhase1()">⟵ Zmień tekst</button>
+        <button class="btn-reveal" id="btn-reveal-write" onclick="toggleReveal('write')">👁 Pokaż tekst</button>
+      </div>
+      <button class="btn-main" onclick="checkDictation()">Sprawdź →</button>
     </div>
   </div>
 
-  <!-- PHASE 3 – results -->
+  <!-- ═══ PHASE 3 – results ═══ -->
   <div class="card hidden" id="phase3">
-    <div class="results-header" id="results-header">Wyniki dyktanda</div>
+    <div class="section-label" id="results-header">Wyniki dyktanda</div>
     <div class="score-row" id="score-row"></div>
     <div class="legend">
       <span><mark style="background:var(--wrong-bg);color:var(--wrong);padding:0 3px;border-radius:2px;">błąd</mark> – niepoprawne słowo</span>
-      <span><mark style="background:#fff3cd;color:#856404;padding:0 3px;border-radius:2px;">brakujące</mark> – pominięte słowo</span>
-      <span><mark style="background:#e2e3ff;color:#3a3aaa;padding:0 3px;border-radius:2px;">extra</mark> – nadmiarowe słowo</span>
+      <span><mark style="background:#fff3cd;color:#856404;padding:0 3px;border-radius:2px;">brakujące</mark> – pominięte</span>
+      <span><mark style="background:#e2e3ff;color:#3a3aaa;padding:0 3px;border-radius:2px;">extra</mark> – nadmiarowe</span>
     </div>
     <div class="comparison" id="comparison"></div>
     <div id="errors-section"></div>
-    <div style="display:flex; justify-content:center; flex-wrap:wrap; gap:0.8rem; margin-top:1rem;">
-      <button class="btn-retry" onclick="goToWrite()">↺ Spróbuj ponownie</button>
-      <button class="btn-retry" onclick="goToPhase1()">⟵ Zmień tekst</button>
+
+    <!-- Reveal panel (results) -->
+    <div class="reveal-panel" id="reveal-results">
+      <div class="reveal-inner">
+        <div class="reveal-heading">📜 Pełny tekst dyktanda</div>
+        <div class="reveal-body" id="reveal-results-body"></div>
+      </div>
+    </div>
+
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:1.2rem; flex-wrap:wrap; gap:0.7rem;">
+      <button class="btn-reveal" id="btn-reveal-results" onclick="toggleReveal('results')">👁 Pokaż tekst</button>
+      <div style="display:flex; gap:0.6rem; flex-wrap:wrap;">
+        <button class="btn-ghost" onclick="retryDictation()">↺ Spróbuj ponownie</button>
+        <button class="btn-ghost" onclick="goToPhase1()">⟵ Zmień tekst</button>
+      </div>
     </div>
   </div>
 
 </div>
-
 <script>
-/* ============================================================
-   TEXTS
-   ============================================================ */
 const TEXTS = [
   {
-    id: 'easy',
-    title: 'Bogowie Olimpu',
-    difficulty: 'Łatwy',
+    id: 'easy', title: 'Bogowie Olimpu', difficulty: 'Łatwy',
     text: 'Hera była królową Olimpu. Hefajstos pracował przy ogniu. Hermes latał nad całą Helladą. Chaos istniał przed wszystkim.'
   },
   {
-    id: 'medium',
-    title: 'Hades i Charon',
-    difficulty: 'Średni',
+    id: 'medium', title: 'Hades i Charon', difficulty: 'Średni',
     text: 'Hades rządził królestwem umarłych. Charon przewoził dusze przez rzekę Styks. Hydra strzegła wejścia do podziemi. Hermes odprowadzał cienie do Charona. Chaos panował przed narodzinami bogów.'
   },
   {
-    id: 'hard',
-    title: 'Opowieść o herosach',
-    difficulty: 'Trudny',
+    id: 'hard', title: 'Opowieść o herosach', difficulty: 'Trudny',
     text: 'Herakles był synem Zeusa i śmiertelnej kobiety. Chimera siała postrach wśród ludzi, lecz heros ją pokonał. Chejron, mądry centaur, uczył Achillesa sztuki walki. Helios przemierzał niebiańskie sklepienie złotym rydwanem. Echo, smutna nimfa, błąkała się po lasach Hellady i powtarzała słowa Charona.'
   },
   {
-    id: 'expert',
-    title: 'Kronika Olimpu',
-    difficulty: 'Ekspercki',
+    id: 'expert', title: 'Kronika Olimpu', difficulty: 'Ekspercki',
     text: 'Na początku istniał tylko Chaos. Z niego wyłoniły się Hera, Hestia i Hebe – córki Chronosa. Hefajstos wykuł złoty tron dla Hery, a Hermes przekazał wieści między bogami i ludźmi Hellady. Hydra, potwór Charybdy i Chimera zasiewały strach w sercach herosów. Chejron uczył ich mądrości, Charon zaś czekał cierpliwie przy brzegu Acherontu. Hekate, bogini nocy, czuwała nad tajemnicami Hadesu.'
   }
 ];
 
-let selectedText = null;
-let utterance = null;
-let speaking = false;
-let paused = false;
-let progressInterval = null;
-let speakStart = null;
-let speakDuration = 0;
+let selectedText = null, utterance = null, speaking = false, paused = false;
+let progressInterval = null, speakStart = null, speakDuration = 0;
 
-/* ============================================================
-   INIT
-   ============================================================ */
+/* ---- Init ---- */
 function init() {
   const grid = document.getElementById('texts-grid');
   TEXTS.forEach(t => {
     const wordCount = t.text.split(/\s+/).length;
     const div = document.createElement('div');
     div.className = 'text-option';
-    div.innerHTML = `
-      <div class="text-option-title">${t.title}</div>
-      <div class="text-option-diff">${t.difficulty}</div>
-      <div class="text-option-count">${wordCount} słów</div>`;
-    div.addEventListener('click', () => selectText(t, div));
+    div.innerHTML = `<div class="text-option-title">${t.title}</div><div class="text-option-diff">${t.difficulty}</div><div class="text-option-count">${wordCount} słów</div>`;
+    div.addEventListener('click', () => {
+      document.querySelectorAll('.text-option').forEach(d => d.classList.remove('selected'));
+      div.classList.add('selected');
+      selectedText = t;
+      document.getElementById('btn-start').disabled = false;
+    });
     grid.appendChild(div);
   });
 }
 
-function selectText(t, el) {
-  document.querySelectorAll('.text-option').forEach(d => d.classList.remove('selected'));
-  el.classList.add('selected');
-  selectedText = t;
-  document.getElementById('btn-start').disabled = false;
-}
-
-/* ============================================================
-   NAVIGATION
-   ============================================================ */
+/* ---- Navigation ---- */
 function setStep(n) {
-  ['step1','step2','step3'].forEach((id, i) => {
-    const el = document.getElementById(id);
-    el.className = 'step' + (i + 1 === n ? ' active' : (i + 1 < n ? ' done' : ''));
+  document.querySelectorAll('.step').forEach((el, i) => {
+    el.className = 'step' + (i+1===n?' active':i+1<n?' done':'');
   });
 }
-
-function startDictation() {
-  document.getElementById('phase1').classList.add('hidden');
-  document.getElementById('phase2').classList.remove('hidden');
-  document.getElementById('user-input').value = '';
-  document.getElementById('char-count').textContent = '0 znaków';
-  setStep(2);
+function showPhase(id) {
+  ['phase1','phase2','phase3'].forEach(p => document.getElementById(p).classList.toggle('hidden', p!==id));
 }
-
-function goToWrite() {
-  // Already on the combined screen — just reset and show phase2 again
-  stopSpeech();
-  document.getElementById('phase3').classList.add('hidden');
-  document.getElementById('phase2').classList.remove('hidden');
+function startDictation() {
   document.getElementById('user-input').value = '';
   document.getElementById('char-count').textContent = '0 znaków';
-  setStep(2);
+  closeReveal('write'); closeReveal('results');
+  showPhase('phase2'); setStep(2);
+}
+function retryDictation() {
+  stopSpeech();
+  document.getElementById('user-input').value = '';
+  document.getElementById('char-count').textContent = '0 znaków';
+  closeReveal('write');
+  showPhase('phase2'); setStep(2);
   setTimeout(() => document.getElementById('user-input').focus(), 100);
 }
-
 function goToPhase1() {
   stopSpeech();
-  document.getElementById('phase2').classList.add('hidden');
-  document.getElementById('phase3').classList.add('hidden');
-  document.getElementById('phase1').classList.remove('hidden');
-  setStep(1);
+  closeReveal('write'); closeReveal('results');
+  showPhase('phase1'); setStep(1);
 }
-
 function countChars() {
-  const len = document.getElementById('user-input').value.length;
-  document.getElementById('char-count').textContent = `${len} znaków`;
+  document.getElementById('char-count').textContent = document.getElementById('user-input').value.length + ' znaków';
 }
 
-/* ============================================================
-   SPEECH
-   ============================================================ */
-function speak() {
-  if (!selectedText) return;
-  if (!window.speechSynthesis) {
-    document.getElementById('status-msg').textContent = 'Twoja przeglądarka nie obsługuje syntezatora mowy.';
-    return;
+/* ---- Reveal toggle ---- */
+function buildHighlight(text) {
+  return text.replace(/(ch|h)/gi, m => `<span class="hi">${m}</span>`);
+}
+function toggleReveal(which) {
+  const panel = document.getElementById('reveal-' + which);
+  const btn   = document.getElementById('btn-reveal-' + which);
+  const body  = document.getElementById('reveal-' + which + '-body');
+  if (panel.classList.contains('open')) {
+    closeReveal(which);
+  } else {
+    body.innerHTML = buildHighlight(selectedText.text);
+    panel.classList.add('open');
+    btn.classList.add('open');
+    btn.textContent = '🙈 Ukryj tekst';
   }
-  stopSpeech();
+}
+function closeReveal(which) {
+  const panel = document.getElementById('reveal-' + which);
+  const btn   = document.getElementById('btn-reveal-' + which);
+  if (!panel || !btn) return;
+  panel.classList.remove('open');
+  btn.classList.remove('open');
+  btn.textContent = '👁 Pokaż tekst';
+}
 
+/* ---- Speech ---- */
+function speak() {
+  if (!selectedText || !window.speechSynthesis) return;
+  stopSpeech();
   const rate = parseFloat(document.getElementById('speed-select').value);
   utterance = new SpeechSynthesisUtterance(selectedText.text);
   utterance.lang = 'pl-PL';
   utterance.rate = rate;
-
   utterance.onstart = () => {
-    speaking = true;
-    paused = false;
+    speaking = true; paused = false;
     document.getElementById('btn-speak').disabled = true;
     document.getElementById('btn-pause').disabled = false;
     document.getElementById('status-msg').textContent = '🔊 Odczytywanie…';
-
-    // Estimate duration for progress bar
     const words = selectedText.text.split(/\s+/).length;
     speakDuration = (words / (rate * 2.5)) * 1000;
     speakStart = Date.now();
     clearInterval(progressInterval);
     progressInterval = setInterval(() => {
-      const elapsed = Date.now() - speakStart;
-      const pct = Math.min((elapsed / speakDuration) * 100, 98);
-      document.getElementById('prog-fill').style.width = pct + '%';
+      document.getElementById('prog-fill').style.width = Math.min(((Date.now()-speakStart)/speakDuration)*100, 98) + '%';
     }, 100);
   };
-
   utterance.onend = () => {
-    speaking = false;
-    paused = false;
+    speaking = false; paused = false;
     clearInterval(progressInterval);
     document.getElementById('prog-fill').style.width = '100%';
     document.getElementById('btn-speak').disabled = false;
     document.getElementById('btn-pause').disabled = true;
     document.getElementById('btn-pause').textContent = '⏸ Pauza';
-    document.getElementById('status-msg').textContent = '✓ Odczytano. Możesz posłuchać ponownie lub przejść do pisania.';
-    setTimeout(() => document.getElementById('prog-fill').style.width = '0%', 1500);
+    document.getElementById('status-msg').textContent = '✓ Odczytano. Możesz odsłuchać ponownie lub sprawdzić.';
+    setTimeout(() => { document.getElementById('prog-fill').style.width = '0%'; }, 1500);
   };
-
   utterance.onerror = () => {
-    document.getElementById('status-msg').textContent = 'Błąd syntezatora mowy. Spróbuj innej przeglądarki (Chrome/Edge).';
+    document.getElementById('status-msg').textContent = 'Błąd syntezatora. Spróbuj w Chrome lub Edge.';
     document.getElementById('btn-speak').disabled = false;
     document.getElementById('btn-pause').disabled = true;
     clearInterval(progressInterval);
   };
-
   window.speechSynthesis.speak(utterance);
 }
-
 function pauseResume() {
   if (!window.speechSynthesis) return;
   if (paused) {
-    window.speechSynthesis.resume();
-    paused = false;
+    window.speechSynthesis.resume(); paused = false;
     document.getElementById('btn-pause').textContent = '⏸ Pauza';
     document.getElementById('status-msg').textContent = '🔊 Odczytywanie…';
-    speakStart = Date.now() - (speakDuration * (parseFloat(document.getElementById('prog-fill').style.width) / 100));
+    const pct = parseFloat(document.getElementById('prog-fill').style.width) || 0;
+    speakStart = Date.now() - speakDuration * (pct/100);
     progressInterval = setInterval(() => {
-      const elapsed = Date.now() - speakStart;
-      const pct = Math.min((elapsed / speakDuration) * 100, 98);
-      document.getElementById('prog-fill').style.width = pct + '%';
+      document.getElementById('prog-fill').style.width = Math.min(((Date.now()-speakStart)/speakDuration)*100,98) + '%';
     }, 100);
   } else {
-    window.speechSynthesis.pause();
-    paused = true;
+    window.speechSynthesis.pause(); paused = true;
     clearInterval(progressInterval);
     document.getElementById('btn-pause').textContent = '▶ Wznów';
     document.getElementById('status-msg').textContent = '⏸ Pauza';
   }
 }
-
 function stopSpeech() {
   if (window.speechSynthesis) window.speechSynthesis.cancel();
-  clearInterval(progressInterval);
-  speaking = false;
-  paused = false;
-  document.getElementById('btn-speak').disabled = false;
-  document.getElementById('btn-pause').disabled = true;
-  document.getElementById('btn-pause').textContent = '⏸ Pauza';
-  document.getElementById('prog-fill').style.width = '0%';
-  document.getElementById('status-msg').textContent = 'Kliknij przycisk, aby usłyszeć tekst dyktanda.';
+  clearInterval(progressInterval); speaking = false; paused = false;
+  const s = document.getElementById('btn-speak');
+  const p = document.getElementById('btn-pause');
+  const m = document.getElementById('status-msg');
+  const f = document.getElementById('prog-fill');
+  if (s) s.disabled = false;
+  if (p) { p.disabled = true; p.textContent = '⏸ Pauza'; }
+  if (f) f.style.width = '0%';
+  if (m) m.textContent = 'Kliknij ▶ Odczytaj, a następnie zacznij pisać poniżej.';
 }
+function updateSpeed() { if (speaking) stopSpeech(); }
 
-function updateSpeed() {
-  if (speaking) { stopSpeech(); }
-}
-
-/* ============================================================
-   CHECKING
-   ============================================================ */
+/* ---- Checking ---- */
 function normalize(s) {
-  return s.trim()
-    .toLowerCase()
-    .replace(/[.,!?;:„"'"()\-–—…]/g, '');
+  return s.trim().toLowerCase().replace(/[.,!?;:„"'"()\-–—…]/g, '');
 }
-
 function checkDictation() {
   const userRaw = document.getElementById('user-input').value.trim();
-  if (!userRaw) return;
-
+  if (!userRaw) { alert('Napisz najpierw tekst dyktanda.'); return; }
   const origWords = selectedText.text.split(/\s+/);
   const userWords = userRaw.split(/\s+/);
-
-  // LCS-based alignment
   const alignment = align(origWords, userWords);
-
-  let correct = 0, errors = [], extraCount = 0, missCount = 0;
-  const compHTML = [];
-  const errorDetails = [];
-
-  alignment.forEach(pair => {
-    const [orig, user] = pair;
+  let correct=0, missCount=0, extraCount=0;
+  const compHTML=[], errorDetails=[];
+  alignment.forEach(([orig,user]) => {
     if (orig && user) {
-      if (normalize(orig) === normalize(user)) {
-        compHTML.push(`<span class="w-ok">${orig}</span>`);
-        correct++;
-      } else {
-        compHTML.push(`<span class="w-err" title="Napisałeś: ${user}">${user}</span>`);
-        errors.push({ wrong: user, right: orig });
-        errorDetails.push({ wrong: user, right: orig });
-      }
-    } else if (orig && !user) {
-      compHTML.push(`<span class="w-miss">[${orig}]</span>`);
-      missCount++;
-      errors.push({ wrong: '–', right: orig });
-    } else if (!orig && user) {
-      compHTML.push(`<span class="w-extra">${user}</span>`);
-      extraCount++;
-    }
+      if (normalize(orig)===normalize(user)) { compHTML.push(`<span class="w-ok">${orig}</span>`); correct++; }
+      else { compHTML.push(`<span class="w-err" title="Napisałeś: ${user}">${user}</span>`); errorDetails.push({wrong:user,right:orig}); }
+    } else if (orig) { compHTML.push(`<span class="w-miss">[${orig}]</span>`); missCount++; errorDetails.push({wrong:'–',right:orig}); }
+    else             { compHTML.push(`<span class="w-extra">${user}</span>`); extraCount++; }
   });
-
-  const total = origWords.length;
-  const pct = Math.round((correct / total) * 100);
-
-  // Show results
-  document.getElementById('phase2').classList.add('hidden');
-  document.getElementById('phase3').classList.remove('hidden');
-  setStep(3);
-
-  // Medal
-  let medal = '';
-  if (pct === 100) medal = '<span class="medal">🏆</span>';
-  else if (pct >= 80) medal = '<span class="medal">🥇</span>';
-  else if (pct >= 60) medal = '<span class="medal">🥈</span>';
-  else medal = '<span class="medal">🥉</span>';
-
-  document.getElementById('results-header').innerHTML = `${medal}Wyniki dyktanda – ${selectedText.title}`;
-
+  const total=origWords.length, pct=Math.round((correct/total)*100);
+  const medal = pct===100?'🏆':pct>=80?'🥇':pct>=60?'🥈':'🥉';
+  document.getElementById('results-header').innerHTML = `<span class="medal">${medal}</span>Wyniki dyktanda – ${selectedText.title}`;
   document.getElementById('score-row').innerHTML = `
     <div class="score-chip gold"><div class="sc-num">${pct}%</div><div class="sc-label">wynik ogólny</div></div>
     <div class="score-chip green"><div class="sc-num">${correct}</div><div class="sc-label">poprawnych słów</div></div>
-    <div class="score-chip red"><div class="sc-num">${errors.length}</div><div class="sc-label">błędów</div></div>
-    <div class="score-chip" style="border-color:rgba(201,168,76,0.25)"><div class="sc-num" style="color:#856404">${missCount}</div><div class="sc-label">pominiętych</div></div>
-  `;
-
+    <div class="score-chip red"><div class="sc-num">${errorDetails.length}</div><div class="sc-label">błędów</div></div>
+    <div class="score-chip"><div class="sc-num" style="color:#856404">${missCount}</div><div class="sc-label">pominiętych</div></div>`;
   document.getElementById('comparison').innerHTML = compHTML.join(' ');
-
   const errSec = document.getElementById('errors-section');
-  if (errorDetails.length === 0) {
-    errSec.innerHTML = `<div style="text-align:center;font-style:italic;color:var(--correct);font-size:1.05rem;padding:0.8rem;">✓ Brawo! Brak błędów ortograficznych.</div>`;
+  if (!errorDetails.length) {
+    errSec.innerHTML = `<div style="text-align:center;font-style:italic;color:var(--correct);padding:0.8rem;font-size:1.05rem;">✓ Brawo! Żadnych błędów.</div>`;
   } else {
-    // Highlight ch/h errors specially
-    const chHErrors = errorDetails.filter(e => {
-      const n1 = normalize(e.wrong), n2 = normalize(e.right);
-      return n1 !== n2 && (
-        n1.replace('ch','h') === n2 || n1.replace('h','ch') === n2 ||
-        n2.replace('ch','h') === n1 || n2.replace('h','ch') === n1
-      );
-    });
-    const otherErrors = errorDetails.filter(e => !chHErrors.includes(e));
-
-    let html = `<div class="results-header" style="margin-top:0.5rem">Poprawki</div><div class="errors-list">`;
+    let html = `<div class="section-label" style="margin-top:0.5rem">Poprawki</div><div class="errors-list">`;
     errorDetails.forEach(e => {
-      const isCh = chHErrors.includes(e);
-      html += `<div class="error-item">
-        <span class="err-wrong">${e.wrong === '–' ? '<em>brak</em>' : e.wrong}</span>
-        <span class="err-arrow">→</span>
-        <span class="err-right">${e.right}</span>
-        ${isCh ? '<span style="font-size:0.75rem;background:#fff0d0;color:#7a5500;padding:0 5px;border-radius:10px;font-style:italic;">h / ch</span>' : ''}
-      </div>`;
+      const n1=normalize(e.wrong), n2=normalize(e.right);
+      const isHCh = n1!==n2 && (n1.replace(/ch/g,'h')===n2||n2.replace(/ch/g,'h')===n1||
+        n1.replace(/\bh/g,'ch')===n2||n2.replace(/\bh/g,'ch')===n1);
+      html += `<div class="error-item"><span class="err-wrong">${e.wrong==='–'?'<em>brak</em>':e.wrong}</span><span class="err-arrow">→</span><span class="err-right">${e.right}</span>${isHCh?'<span class="err-tag">h / ch</span>':''}</div>`;
     });
     html += `</div>`;
     errSec.innerHTML = html;
   }
+  closeReveal('results');
+  showPhase('phase3'); setStep(3);
 }
 
-/* ============================================================
-   ALIGNMENT (LCS-based)
-   ============================================================ */
+/* ---- LCS alignment ---- */
 function align(orig, user) {
-  const n = orig.length, m = user.length;
-  // Build LCS table
-  const dp = Array.from({length: n+1}, () => new Array(m+1).fill(0));
-  for (let i = 1; i <= n; i++)
-    for (let j = 1; j <= m; j++)
-      if (normalize(orig[i-1]) === normalize(user[j-1])) dp[i][j] = dp[i-1][j-1] + 1;
-      else dp[i][j] = Math.max(dp[i-1][j], dp[i][j-1]);
-
-  // Traceback
-  const result = [];
-  let i = n, j = m;
-  while (i > 0 || j > 0) {
-    if (i > 0 && j > 0 && normalize(orig[i-1]) === normalize(user[j-1])) {
-      result.unshift([orig[i-1], user[j-1]]);
-      i--; j--;
-    } else if (j > 0 && (i === 0 || dp[i][j-1] >= dp[i-1][j])) {
-      result.unshift([null, user[j-1]]);
-      j--;
-    } else {
-      result.unshift([orig[i-1], null]);
-      i--;
-    }
+  const n=orig.length, m=user.length;
+  const dp=Array.from({length:n+1},()=>new Array(m+1).fill(0));
+  for(let i=1;i<=n;i++) for(let j=1;j<=m;j++)
+    dp[i][j]=normalize(orig[i-1])===normalize(user[j-1])?dp[i-1][j-1]+1:Math.max(dp[i-1][j],dp[i][j-1]);
+  const result=[]; let i=n,j=m;
+  while(i>0||j>0){
+    if(i>0&&j>0&&normalize(orig[i-1])===normalize(user[j-1])){result.unshift([orig[i-1],user[j-1]]);i--;j--;}
+    else if(j>0&&(i===0||dp[i][j-1]>=dp[i-1][j])){result.unshift([null,user[j-1]]);j--;}
+    else{result.unshift([orig[i-1],null]);i--;}
   }
   return result;
 }
 
-/* ============================================================
-   START
-   ============================================================ */
 init();
 </script>
 </body>
